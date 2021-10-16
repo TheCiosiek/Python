@@ -73,7 +73,6 @@ while(run_next==1):
         while(True):
                 z=x*i
                 if z%y==0:
-                    z=math.trunc(z)
                     print(f"Najmniejsza wspólna wielokrotność twoich liczb to: {z}")
                     break
                 i=i+1

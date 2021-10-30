@@ -6,7 +6,7 @@ set1=set(lista1)
 set2=set(lista2)
 set3=set(lista3)
 
-if ((set1 | set2) ^ set3):
+if (set1 | set2) ^ set3 or set1 ^ (set2 | set3):
     print("Listy nie zawierają tych samych elementów, ",end='')
 else:
     print("Listy zawierają te same elementy, ",end='')
@@ -17,4 +17,4 @@ if len(set2)-len(lista2):
 if len(set3)-len(lista3):
     print("lista3 ",end='')
 
-print("zawiera duplikaty.")
+print("zawiera duplikaty.")  

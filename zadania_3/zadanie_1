@@ -1,1 +1,20 @@
-print ("Hello World")
+def convert_string_to_number (str):
+    str=int(str)
+    return str
+
+def find_min(tab):
+
+    x=tab[0]
+    for i in tab:
+
+       if x>i:
+           x=i
+    return x
+value=input("Wprowadź wartość")
+value=convert_string_to_number(value)
+values=input("Wprowadź wartości oddzielone spacją, a znajdę najmniejszą z tych liczb\n")
+
+values=values.split()
+min=find_min(values)
+
+print(f"Najmniejsza wartość to: {min}")

@@ -10,7 +10,22 @@ def find_min(tab):
        if x>i:
            x=i
     return x
-value=input("Wprowadź wartość")
+
+def print_list(list):
+    for i in list:
+        print(i)
+    return
+
+def print_dict(dict):
+    for key in dict_to_print:
+        print(f"„{key}” {dict_to_print[key]}")
+    return
+
+dict_to_print={"a":1,"b":2,"c":3}
+dict_to_print=print_dict(dict_to_print)
+list=[1,2,3,4,5]
+print_list(list)
+value=input("Wprowadź wartość: ")
 value=convert_string_to_number(value)
 values=input("Wprowadź wartości oddzielone spacją, a znajdę najmniejszą z tych liczb\n")
 

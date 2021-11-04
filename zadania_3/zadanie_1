@@ -26,9 +26,13 @@ def print_dict(dict):
 
 def get_length(string):
     x=len(string)
-    print(x)
+    print(f"Twoje słowo ma {x} znaków")
     return x
 
+def remove_outer_characters(string, len):
+    string=string[1:len-1]
+    print(f"Nowe słowo to {string}")
+    return
 
 value=input("Wprowadź wartość: ")
 convert_string_to_number(value)
@@ -42,8 +46,7 @@ print_dict(dict_to_print)
 values=input("Wprowadź wartości oddzielone spacją, a znajdę najmniejszą z tych liczb\n")
 find_min(values)
 
-word=input("Wprowadź słowo, oblicze jego długość")
-get_lenth(word)
-
-string=input("Wprowadź słowo, a je skrócę o pierwszy i ostatni znak.")
+string=input("Wprowadź słowo, oblicze jego długość i skrócę o pierwszy i ostatni znak: ")
 len_string=get_length(string)
+remove_outer_characters(string, len_string)
+

@@ -8,13 +8,18 @@ def print_list(list):
         print(i)
     return
 
-def find_min(tab):
-
-    x=tab[0]
-    for i in tab:
-       if x>i:
-           x=i
-    return x
+def find_min(values):
+    k=0
+    int_values=[]
+    values=values.split()
+    for i in values:
+        int_values.append(int(i))
+        k+=1
+    x=int_values[0]
+    for i in int_values:
+        if x>i:
+            x=i
+    return print(f"Najmniejsza wartość to: {x}")
 
 def print_dict(dict):
     for key in dict_to_print:
@@ -37,9 +42,7 @@ dict_to_print={"a":1,"b":2,"c":3}
 print_dict(dict_to_print)
 
 values=input("Wprowadź wartości oddzielone spacją, a znajdę najmniejszą z tych liczb\n")
-values=values.split()
-minimum=find_min(values)
-print(f"Najmniejsza wartość to: {minimum}")
+find_min(values)
 
 word=input("Wprowadź słowo, oblicze jego długość")
 get_lenth(word)

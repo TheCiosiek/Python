@@ -1,35 +1,48 @@
 def convert_string_to_number (str):
     str=int(str)
-    return str
-
-def find_min(tab):
-
-    x=tab[0]
-    for i in tab:
-
-       if x>i:
-           x=i
-    return x
+    print (str)
+    return
 
 def print_list(list):
     for i in list:
         print(i)
     return
 
+def find_min(tab):
+
+    x=tab[0]
+    for i in tab:
+       if x>i:
+           x=i
+    return x
+
 def print_dict(dict):
     for key in dict_to_print:
         print(f"„{key}” {dict_to_print[key]}")
     return
 
-dict_to_print={"a":1,"b":2,"c":3}
-dict_to_print=print_dict(dict_to_print)
+def get_length(string):
+    x=len(string)
+    print(x)
+    return x
+
+
+value=input("Wprowadź wartość: ")
+convert_string_to_number(value)
+
 list=[1,2,3,4,5]
 print_list(list)
-value=input("Wprowadź wartość: ")
-value=convert_string_to_number(value)
+
+dict_to_print={"a":1,"b":2,"c":3}
+print_dict(dict_to_print)
+
 values=input("Wprowadź wartości oddzielone spacją, a znajdę najmniejszą z tych liczb\n")
-
 values=values.split()
-min=find_min(values)
+minimum=find_min(values)
+print(f"Najmniejsza wartość to: {minimum}")
 
-print(f"Najmniejsza wartość to: {min}")
+word=input("Wprowadź słowo, oblicze jego długość")
+get_lenth(word)
+
+string=input("Wprowadź słowo, a je skrócę o pierwszy i ostatni znak.")
+len_string=get_length(string)

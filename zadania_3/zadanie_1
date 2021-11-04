@@ -47,7 +47,7 @@ def count_chars(string):
     print (sorted_count_dict)
     return
 
-"""
+
 value=input("Wprowadź wartość: ")
 convert_string_to_number(value)
 
@@ -63,6 +63,6 @@ find_min(values)
 string=input("Wprowadź słowo, oblicze jego długość i skrócę o pierwszy i ostatni znak: ")
 len_string=get_length(string)
 remove_outer_characters(string, len_string)
-"""
+
 hash=input("Wprowadź hasz, policzę ile ma konkretnych znaków: ")
 count_dict=count_chars(hash)

@@ -9,12 +9,10 @@ def print_list(list):
     return
 
 def find_min(values):
-    k=0
     int_values=[]
     values=values.split()
     for i in values:
         int_values.append(int(i))
-        k+=1
     x=int_values[0]
     for i in int_values:
         if x>i:

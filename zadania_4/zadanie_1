@@ -1,6 +1,7 @@
 import os
 def register():
-    while 1:
+    user={}
+    while True:
         try:
             login=input("Wpisz login: ")
             if len(login)<6:
@@ -12,6 +13,7 @@ def register():
                 if len(password)>5:
                     check_password=input("Wpisz ponownie hasło: ")
                     if password==check_password:
+                        user[login]=password
                         print("Rejestracja przebiegła pomyślnie")
                     else:
                         os.system('cls' if os.name == 'nt' else 'clear')
@@ -24,8 +26,10 @@ def register():
         except:
             print('rejestracja niepoprawna spróbuj jeszcze raz.')
         else:
-            return
+            return user
            
 
 os.system('cls' if os.name == 'nt' else 'clear')
-register()
+dane_uzytkownikow={}
+dane_uzytkownikow=register()
+print(dane_uzytkownikow)

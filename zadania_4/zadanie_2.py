@@ -20,7 +20,7 @@ def values_to_int(values):
             values=get_values()
         try:
             for i in range (0, len(values)):
-                values[i]=int(values[i])
+                values[i]=float(values[i])
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
             str_in_values=1

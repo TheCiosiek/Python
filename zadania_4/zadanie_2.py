@@ -66,5 +66,5 @@ while again==1:
     os.system('cls' if os.name == 'nt' else 'clear')
     points=[0]*3
     points=points_list(points)
-    print(f"[sum, max, min]/n{points}")
+    print(f"[sum, max, min]\n{points}")
     again=int(input('(1) Powtórzyć\n(0) Wyjść\nTwoja decyzja: '))

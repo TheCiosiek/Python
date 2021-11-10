@@ -36,17 +36,20 @@ def get_max(list):
         if i>max:
             max=i
     return max
+
 def get_sum(list):
     sum=0
     for i in list:
         sum+=i
     return sum
+
 def get_min(list):
     min=list[0]
     for i in list:
         if i<min:
             min=i
     return min
+
 def points_list(points):
     list=get_values()
     list=values_to_int(list)
@@ -54,6 +57,10 @@ def points_list(points):
     points[1]=get_max(list)
     points[2]=get_min(list)
     return points
+
+
+
+    
 again=1
 while again==1:
     os.system('cls' if os.name == 'nt' else 'clear')

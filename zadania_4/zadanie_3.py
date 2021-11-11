@@ -84,13 +84,14 @@ def add_user(user_data):
             print("Rejestracja przebiegła pomyślnie.")
             run=check_again()
     return user_data
+
 def show_users(user_data):
     num=0
     os.system('cls' if os.name == 'nt' else 'clear')
     for login in user_data:
         num+=1
         print(f"Użytkownik_{num}:\nlogin: {login}\nhasło: {user_data[login]}\n")
-    input("\nNaciśnij enter by wyjść do menu")
+    input("Naciśnij enter by wyjść do menu")
     os.system('cls' if os.name == 'nt' else 'clear')
     return
 
@@ -103,13 +104,41 @@ def menu(user_data):
         if option == 2:
             show_users(user_data)
         if option == 3:
-            change_password()
+            change_password(user_data)
         if option == 4:
             del_user(user_data)
     input("Program zakończony, naciśnij enter by wyjść")
     return
     
-
+def change_password(user_data):
+    run=1
+    while run==1:
+        login=input("Wprowadź login użytkownika którego hasło chcesz zmienić: ")
+        if user_data.get(login):
+            while True:
+                try:
+                    password=input("Wprowadź nowe hasło: ")
+                    if len(password)>5:
+                        check_password=input("Wpisz ponownie hasło: ")
+                        if password==check_password:
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                        else:
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            print("Error: Hasła muszą się zgadzać. ")
+                            raise ValueError
+                    else:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print("Error: Hasło musi mieć przynajmniej 6 znaków.")
+                        raise ValueError
+                except ValueError:
+                    pass
+                else:
+                    return password
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("Error: Nie ma takiego użytkownika")
+            run=check_again()
+    return
 
 user_data={'loginek':'haselko'}
 os.system('cls' if os.name == 'nt' else 'clear')

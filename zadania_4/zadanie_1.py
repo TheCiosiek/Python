@@ -1,5 +1,5 @@
 import os
-def register():
+def add_user():
     user={}
     while True:
         try:
@@ -31,5 +31,5 @@ def register():
 
 os.system('cls' if os.name == 'nt' else 'clear')
 dane_uzytkownikow={}
-dane_uzytkownikow=register()
+dane_uzytkownikow=add_user()
 print(dane_uzytkownikow)

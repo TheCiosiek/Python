@@ -91,6 +91,8 @@ def show_users(user_data):
     for login in user_data:
         num+=1
         print(f"Użytkownik_{num}:\nlogin: {login}\nhasło: {user_data[login]}\n")
+    if num==0:
+        print("Brak użytkowników.\n")
     input("Naciśnij enter by wyjść do menu")
     os.system('cls' if os.name == 'nt' else 'clear')
     return

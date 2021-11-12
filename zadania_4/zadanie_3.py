@@ -12,7 +12,7 @@ def choose_option():
                 return option
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("Wprowadzono złą wartość, spróbuj jeszcze raz.")
+            print("Error: Wprowadzono złą wartość, spróbuj jeszcze raz.")
 def get_info_new_user():
     run=1
     while run==1:
@@ -106,7 +106,7 @@ def menu(user_data):
         if option == 2:
             show_users(user_data)
         if option == 3:
-            change_password(user_data)
+            user_data=change_password(user_data)
         if option == 4:
             del_user(user_data)
     input("Program zakończony, naciśnij enter by wyjść")
@@ -117,25 +117,31 @@ def change_password(user_data):
     while run==1:
         login=input("Wprowadź login użytkownika którego hasło chcesz zmienić: ")
         if user_data.get(login):
-            while True:
+            wrong_password=0
+            while wrong_password==0 or wrong_password==1:
                 try:
+                    if wrong_password==0:
+                        print("Hasło musi mieć przynajmniej 6 znaków.")
                     password=input("Wprowadź nowe hasło: ")
                     if len(password)>5:
                         check_password=input("Wpisz ponownie hasło: ")
                         if password==check_password:
                             os.system('cls' if os.name == 'nt' else 'clear')
                         else:
+                            wrong_password=1
                             os.system('cls' if os.name == 'nt' else 'clear')
                             print("Error: Hasła muszą się zgadzać. ")
                             raise ValueError
                     else:
+                        wrong_password=1
                         os.system('cls' if os.name == 'nt' else 'clear')
                         print("Error: Hasło musi mieć przynajmniej 6 znaków.")
                         raise ValueError
                 except ValueError:
                     pass
                 else:
-                    return password
+                    user_data[login]=password
+                    return user_data
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             print("Error: Nie ma takiego użytkownika")

@@ -1,14 +1,14 @@
 import random
-def roll_two_dice_times(n,dots,rolls):
+def roll_two_dice_times(n):
     cnt=0
-    dice1,dice2={},{}
     for i in range(n):
-        dice1[dicerandom.randint(1,6)]+=1 
+        roll_1=random.randint(1,6)
+        roll_2=random.randint(1,6)
+        if roll_1==roll_2:
+            cnt+=1
+
+    print(f"Rzucono {n} razy dwoma kostkami, te same wartości wypadły {cnt} razy.")
         
 
 i=int(input("Ile razy rzucić kostką: "))
-confirmation="nie "
-if roll_two_dice_times(i,j,k):
-    confirmation=""
-
-print(f"Rzucono {i} razy dwoma kostkami, te same wartości {confirmation}wypadły {k} razy.")
+roll_two_dice_times(i)

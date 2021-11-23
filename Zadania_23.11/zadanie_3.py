@@ -12,9 +12,8 @@ def roll_dice_times(n,dots,rolls):
 i=int(input("Ile razy rzucić kostką: "))
 j=int(input("Jaka wartość oczekiwana: "))
 k=int(input("Ile razy musi wypaść: "))
-isTrue=roll_dice_times(i,j,k)
 confirmation="nie "
-if isTrue:
+if roll_two_dice_times(i,j,k):
     confirmation=""
 print(f"Rzucono {i} razy kostką, oczekiwana wartość ({j}) {confirmation}wypadła przynajmniej {k} razy.")
 

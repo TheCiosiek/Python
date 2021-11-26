@@ -1,0 +1,36 @@
+is_authenticated = [False, user]
+movies = {}
+users = {"admin":"haselko$1"}
+leave=0
+
+def register_user():
+    pass 
+
+def add_movie():
+    pass
+
+def modify_movie():
+    pass
+
+def get_movies():
+    pass
+
+def check_movie_availability():
+    pass
+
+def rent_movie():
+    pass
+
+def login_user():
+    os.system('cls' if os.name == 'nt' else 'clear')
+    login=input("Wprowadź login: ")
+    password=input("Wprowadź hasło: ")
+    if login in users:
+        if users[login]==password:
+            is_authenticated=True, login
+    else:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("Nieprawidłowy login lub hasło. Spróbuj jeszcze raz.")
+    
+while True:
+    pass

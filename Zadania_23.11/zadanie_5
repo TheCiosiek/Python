@@ -194,7 +194,7 @@ def rent_movie(movies,auth):
         input(f"Film nie istnieje w bazie danych. {cont}")
         return {}
     else:
-        print(f"Możliwość wypożyczenia filmu tylko dla zalogowamych użytkowników. {cont}")
+        input(f"Możliwość wypożyczenia filmu tylko dla zalogowamych użytkowników. {cont}")
         return {}
 def login_user(users,auth):
     cont="Naciśnij enter by kontynuować..."

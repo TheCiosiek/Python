@@ -45,8 +45,7 @@ def register_user(users, auth):
     if auth==(True,"admin"):
         while True:
             os.system('cls' if os.name == 'nt' else 'clear')
-            password_pass={"Duże litery":0,"Małe litery":0,"Cyfry":0,"Znaki specjalne":0}
-            is_correct=1
+            password_pass={"Sześć znaków":0,"Duże litery":0,"Małe litery":0,"Cyfry":0,"Znaki specjalne":0}
             print("Login powinien mieć przynajmniej 5 znaków. Wpisz 0 by wyjść do menu.")
             new_login=input("Nowy login: ")
             if new_login=="0":
@@ -59,11 +58,14 @@ def register_user(users, auth):
                 continue
             break
         while True:
+            is_correct=1
             os.system('cls' if os.name == 'nt' else 'clear')
-            print(f"Hasło musi mieć przynajmniej 6 znaków, jedną małą i dużą literę, cyfre oraz znak specjalny. Wpisz 0 by wyjść do menu.\nNowy login: {login}")
+            print(f"Hasło musi mieć przynajmniej 6 znaków, jedną małą i dużą literę, cyfre oraz znak specjalny. Wpisz 0 by wyjść do menu.\nNowy login: {new_login}")
             new_password=input("Nowe hasło: ")
             if new_password=="0":
                 return {}
+            if len(new_password)>5:
+                password_pass["Sześć znaków"]+=1
             for i in new_password:
                 if i.isalpha():
                     if ord(i) in range(65,91):
@@ -80,13 +82,13 @@ def register_user(users, auth):
                     is_correct=0
                 else:
                     isOkay=True
-                print (f"\n{i}: {isOkay}")        
-                if not is_correct:
-                    input(f"ERROR: Rejestracja niepoprawna. {cont}")
-                else: 
-                    input(f"Rejestracja poprawna. {cont}")
-                    new_user[new_login]=new_password
-                    return new_user
+                print (f"{i}: {isOkay}")        
+            if not is_correct:
+                input(f"ERROR: Rejestracja niepoprawna. {cont}")
+            else: 
+                input(f"Rejestracja poprawna. {cont}")
+                new_user[new_login]=new_password
+                return new_user
     else:
         input(f"Tylko admin może dodać użytkownika. {cont}")
         return {}

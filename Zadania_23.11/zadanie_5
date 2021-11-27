@@ -155,12 +155,8 @@ def modify_movie(movies,auth):
 
 def get_movies(movies):
     cont="Naciśnij enter by kontynuować..."
-    j=0
     for i in movies:
-            print("Film: {:^18}\nDostępność: {:^2}".format(i, movies[i]))
-            if j!=0:
-                print("----------------------------------")
-            j+=1
+            print(f"Film: {i}\nDostępność: {movies[i]}")
     input(f"{cont}")
     os.system('cls' if os.name == 'nt' else 'clear')
 

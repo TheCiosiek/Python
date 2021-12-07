@@ -79,11 +79,10 @@ def register_user(users, auth):
             for i in password_pass:
                 if password_pass[i]==0:
                     isOkay=False
-                    is_correct=0
                 else:
                     isOkay=True
                 print (f"{i}: {isOkay}")        
-            if not is_correct:
+            if isOkay:
                 input(f"ERROR: Rejestracja niepoprawna. {cont}")
             else: 
                 input(f"Rejestracja poprawna. {cont}")

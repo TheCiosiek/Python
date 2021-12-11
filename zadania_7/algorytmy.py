@@ -10,29 +10,28 @@ def is_numeric(x):
         return False
     while i<length:
         if ord(x[i]) in range (48,58):
-            i+=1
+            pass
         elif ord(x[i])==46 and wasDot==0:
             wasDot=1
         else:
-            print(f"{x} is not a number")
             return False
-    print(f"{x} is a number")
+        i+=1
     return True
 
 def add(x, y):
-    if is_numeric(x) or is_numeric(y):
+    if is_numeric(x) and is_numeric(y):
         return x+y
     else:
         return ValueError
 
 def subtract(x, y):
-    if is_numeric(x) or is_numeric(y):
+    if is_numeric(x) and is_numeric(y):
         return x-y
     else:
         return ValueError
 
 def multiply(x, y):
-    if is_numeric(x) or is_numeric(y):
+    if is_numeric(x) and is_numeric(y):
         return x*y
     else:
         return ValueError
@@ -43,7 +42,7 @@ def divide(x, y):
             raise ValueError('Can not divide by zero!')
     except:
         return ValueError
-    if is_numeric(x) or is_numeric(y):
+    if is_numeric(x) and is_numeric(y):
         return x/y
     else:
         return ValueError

@@ -16,14 +16,14 @@ class Tests(unittest.TestCase):
         self.assertEqual(subtract(-1,-1),0, "Liczby ujemne")
         self.assertEqual(subtract(0.4,2),-1.6,"Liczby niecałkowite")
         self.assertEqual(subtract(0,0.3),-0.3,"Działanie z zerem")
-        self.assertEqual(add("e","l"),ValueError,"Input jako litera")
+        self.assertEqual(add("e",1),ValueError,"Input jako litera")
     def testMultiply(self):
         self.assertEqual(multiply(1,2), 2, "Liczby dodatnie")
         self.assertEqual(multiply(-1,2),-2, "Liczby mieszane")
         self.assertEqual(multiply(-1,-1),1, "Liczby ujemne")
         self.assertEqual(multiply(0.4,2),0.8,"Liczby niecałkowite")
         self.assertEqual(multiply(0,0.3),0,"Działanie z zerem")
-        self.assertEqual(add("e","l"),ValueError,"Input jako litera")
+        self.assertEqual(add("e",1),ValueError,"Input jako litera")
     def testDivide(self):
         self.assertEqual(divide(1,2), 0.5, "Liczby dodatnie")
         self.assertEqual(divide(-1,2),-0.5, "Liczby mieszane")

@@ -9,21 +9,24 @@ class Tests(unittest.TestCase):
         self.assertEqual(add(-1,-1),-2, "Liczby ujemne")
         self.assertEqual(add(0.4,2),2.4,"Liczby niecałkowite")
         self.assertEqual(add(0,0.3),0.3,"Działanie z zerem")
-        self.assertEqual(add("e","l"),ValueError,"Input jako litera")
+        self.assertEqual(add("e",1),ValueError,"Input jako litera")
+        self.assertEqual(add(1,"2.7.5"),ValueError,"Input jako litera")
     def testSubstract(self):
         self.assertEqual(subtract(1,2), -1, "Liczby dodatnie")
         self.assertEqual(subtract(-1,2),-3, "Liczby mieszane")
         self.assertEqual(subtract(-1,-1),0, "Liczby ujemne")
         self.assertEqual(subtract(0.4,2),-1.6,"Liczby niecałkowite")
         self.assertEqual(subtract(0,0.3),-0.3,"Działanie z zerem")
-        self.assertEqual(add("e",1),ValueError,"Input jako litera")
+        self.assertEqual(subtract("e",1),ValueError,"Input jako litera")
+        self.assertEqual(subtract(1,"2.7.5"),ValueError,"Input jako litera")
     def testMultiply(self):
         self.assertEqual(multiply(1,2), 2, "Liczby dodatnie")
         self.assertEqual(multiply(-1,2),-2, "Liczby mieszane")
         self.assertEqual(multiply(-1,-1),1, "Liczby ujemne")
         self.assertEqual(multiply(0.4,2),0.8,"Liczby niecałkowite")
         self.assertEqual(multiply(0,0.3),0,"Działanie z zerem")
-        self.assertEqual(add("e",1),ValueError,"Input jako litera")
+        self.assertEqual(multiply("e",1),ValueError,"Input jako litera")
+        self.assertEqual(multiply(1,"2.7.5"),ValueError,"Input jako litera")
     def testDivide(self):
         self.assertEqual(divide(1,2), 0.5, "Liczby dodatnie")
         self.assertEqual(divide(-1,2),-0.5, "Liczby mieszane")
@@ -31,7 +34,8 @@ class Tests(unittest.TestCase):
         self.assertEqual(divide(0.4,2),0.2,"Liczby niecałkowite")
         self.assertEqual(divide(0,0.3),0,"Działanie z zerem")
         self.assertEqual(divide(1,0),ValueError,"Działanie z zerem, odwrócone")
-        self.assertEqual(add("e","l"),ValueError,"Input jako litera")
+        self.assertEqual(divide("e",1),ValueError,"Input jako litera")
+        self.assertEqual(divide(1,"2.7.5"),ValueError,"Input jako litera")
 
 class Test_Employee(unittest.TestCase):
     def test_introduce(self):

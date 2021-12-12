@@ -4,7 +4,12 @@ def is_numeric(x):
     i=1
     length=len(x)
     wasDot=0
-    if ord(x[0])==45 or ord(x[0])in range(48,58):
+    if ord(x[0])==45:
+        pass
+    elif ord(x[0]) in range (48,58):
+        pass
+    elif ord(x[0])==46:
+        wasDot=1
         pass
     else:
         return False
@@ -20,18 +25,24 @@ def is_numeric(x):
 
 def add(x, y):
     if is_numeric(x) and is_numeric(y):
+        x=float(x)
+        y=float(y)
         return x+y
     else:
         return ValueError
 
 def subtract(x, y):
     if is_numeric(x) and is_numeric(y):
+        x=float(x)
+        y=float(y)
         return x-y
     else:
         return ValueError
 
 def multiply(x, y):
     if is_numeric(x) and is_numeric(y):
+        x=float(x)
+        y=float(y)
         return x*y
     else:
         return ValueError
@@ -43,6 +54,8 @@ def divide(x, y):
     except:
         return ValueError
     if is_numeric(x) and is_numeric(y):
+        x=float(x)
+        y=float(y)
         return x/y
     else:
         return ValueError
@@ -68,3 +81,14 @@ class Employee:
         
     def get_email(self):
         return f'{self.first_name}{self.last_name}@company.com'
+
+def is_negative(num):
+    return num<0
+def calculate_savings(starting_amount, monthly_payment, monthly_deductions): 
+    if not is_numeric(starting_amount) or not is_numeric(monthly_payment) or not is_numeric(monthly_deductions): 
+        return ValueError
+    starting_amount, monthly_payment, monthly_deductions = float(starting_amount), float(monthly_payment), float(monthly_deductions)
+    if is_negative(starting_amount) or is_negative(monthly_payment) or is_negative(monthly_deductions): 
+        return ValueError 
+    
+    return round(starting_amount + 12 * (monthly_payment - monthly_deductions),2)

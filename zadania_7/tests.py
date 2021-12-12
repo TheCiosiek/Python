@@ -88,4 +88,6 @@ class Tests_savings(unittest.TestCase):
         self.assertEqual(calculate_savings("e",700,100), ValueError)
         self.assertEqual(calculate_savings(1000,"e",100), ValueError)
         self.assertEqual(calculate_savings(100,0.100,-.100), ValueError)
+        self.assertEqual(calculate_savings(-100,0.100,.100), ValueError)
+        self.assertEqual(calculate_savings(100,-0.100,.100), ValueError)
 unittest.main()

@@ -10,7 +10,6 @@ def is_numeric(x):
         pass
     elif ord(x[0])==46:
         wasDot=1
-        pass
     else:
         return False
     while i<length:

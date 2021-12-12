@@ -7,7 +7,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(add(-1,-1),-2, "Liczby ujemne")
         self.assertEqual(add(0.4,2),2.4,"Liczby niecałkowite")
         self.assertEqual(add(0,0.3),0.3,"Działanie z zerem")
-        self.assertEqual(add("e",1),ValueError,"Input jako litera")
+        self.assertEqual(add("13c",1),ValueError,"Input jako litera")
         self.assertEqual(add(1,"2.7.5"),ValueError,"Input jako litera")
         self.assertEqual(add(1,"--2.7"),ValueError,"Input jako litera")
         
@@ -17,7 +17,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(subtract(-1,-1),0, "Liczby ujemne")
         self.assertEqual(subtract(0.4,2),-1.6,"Liczby niecałkowite")
         self.assertEqual(subtract(0,0.3),-0.3,"Działanie z zerem")
-        self.assertEqual(subtract("e",1),ValueError,"Input jako litera")
+        self.assertEqual(subtract("13c",1),ValueError,"Input jako litera")
         self.assertEqual(subtract(1,"2.7.5"),ValueError,"Input jako litera")
         self.assertEqual(subtract(1,"--2.7"),ValueError,"Input jako litera")
 
@@ -27,7 +27,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(multiply(-1,-1),1, "Liczby ujemne")
         self.assertEqual(multiply(0.4,2),0.8,"Liczby niecałkowite")
         self.assertEqual(multiply(0,0.3),0,"Działanie z zerem")
-        self.assertEqual(multiply("e",1),ValueError,"Input jako litera")
+        self.assertEqual(multiply("13c",1),ValueError,"Input jako litera")
         self.assertEqual(multiply(1,"2.7.5"),ValueError,"Input jako litera")
         self.assertEqual(multiply(1,"--2.7"),ValueError,"Input jako litera")
     
@@ -38,7 +38,7 @@ class Tests(unittest.TestCase):
         self.assertEqual(divide(0.4,2),0.2,"Liczby niecałkowite")
         self.assertEqual(divide(0,0.3),0,"Działanie z zerem")
         self.assertEqual(divide(1,0),ValueError,"Działanie z zerem, odwrócone")
-        self.assertEqual(divide("e",1),ValueError,"Input jako litera")
+        self.assertEqual(divide("13c",1),ValueError,"Input jako litera")
         self.assertEqual(divide(1,"2.7.5"),ValueError,"Input jako litera")
         self.assertEqual(divide(1,"--2.7"),ValueError,"Input jako litera")
 
@@ -72,7 +72,7 @@ class Test_Numeric(unittest.TestCase):
         self.assertFalse(is_numeric("..73"))
         self.assertFalse(is_numeric("--.73"))
         self.assertFalse(is_numeric("0.73."))
-        self.assertFalse(is_numeric("e"))
+        self.assertFalse(is_numeric("13c"))
 class Tests_negative(unittest.TestCase):
     def test_negative(self):
         self.assertTrue(is_negative(-7))
@@ -85,8 +85,8 @@ class Tests_savings(unittest.TestCase):
         self.assertEqual(calculate_savings(1000,0,.100), 998.8)
         self.assertEqual(calculate_savings(000,0,.100), -1.2)
         self.assertEqual(calculate_savings(1000,700,"0..01"), ValueError)
-        self.assertEqual(calculate_savings("e",700,100), ValueError)
-        self.assertEqual(calculate_savings(1000,"e",100), ValueError)
+        self.assertEqual(calculate_savings("13c",700,100), ValueError)
+        self.assertEqual(calculate_savings(1000,"13c",100), ValueError)
         self.assertEqual(calculate_savings(100,0.100,-.100), ValueError)
         self.assertEqual(calculate_savings(-100,0.100,.100), ValueError)
         self.assertEqual(calculate_savings(100,-0.100,.100), ValueError)

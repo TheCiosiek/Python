@@ -4,8 +4,10 @@ import employees
 import products
 import orders
 import database as dt
+
 def options():
     cnt=0
+    err=0
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         print_out=["Pracownicy - ","Zamówiena - ","Produkty - "]
@@ -14,11 +16,15 @@ def options():
                 print(f"{print_out[i]}{i-cnt+1}")
             else:
                 cnt+=1
+        if err==1:
+            print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {i-cnt+1}")
         try:
             option = int(input("\ninput: "))
+            if option not in range (1, i-cnt+2):
+                raise ValueError()
         except ValueError:
+            err=1
             os.system('cls' if os.name == 'nt' else 'clear')
-            print(f"ERROR: Proszę wprowadzić cyfrę z przedziału {1} - {i-cnt+1}")
         else:
             break
     os.system('cls' if os.name == 'nt' else 'clear')

@@ -32,30 +32,6 @@ def options():
             os.system('cls' if os.name == 'nt' else 'clear')
             print("ERROR: Wprowadzono złą wartość, spróbuj jeszcze raz.")
 
-def login():
-    os.system('cls' if os.name == 'nt' else 'clear')
-    while True:
-        print("Wpisz 0, by wyjść.")
-        login=input("Login: ")
-        if login=="0":
-            dt.auth = None, "access"
-            return
-        password=input("Hasło: ")
-        if password=="0":
-            dt.auth = None, "user"
-            return
-        for user in dt.users:
-            if user[2].lower()==login.lower():
-                if user[3]==password:
-                    input("Zalogowanie poprawne. Naciśnij enter by kontynuować...")
-                    os.system('cls' if os.name == 'nt' else 'clear')
-                    dt.auth = True, user
-                    return
-                else: 
-                    break
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print(f"ERROR: Nieprawidłowy login lub hasło.")
-
 def acces_change():
     access=[]
     err=0
@@ -136,31 +112,60 @@ def make_username(name,surname):
             i+=1
     except IndexError:
         pass
+    #Sprawdzenie czy istenije już nazwa
+    i=1
+    cont=1
+    #sprawdzenie czy istnieje nazwa bez liczby
+    for user in dt.users:
+        if user[2]==username:
+            i+=1
+            #sprawdzenie każdej kolejnej liczby czy już taka istnieje
+            while cont==1:
+                cont=0
+                for user in dt.users:
+                    if user[2]==username+("_"+str(i)):
+                        i+=1
+                        cont=1
+                        break
+            break
+                
+    if i>1:
+        username+=("_"+str(i))
     return username
 
-def add_user():
+def add_name():
     print("Wpisz 0, by wyjść")
     while True:
         name = input("Wprowadź imię: ")
-        if name==0:
-            return
+        if name=="0":
+            return "0"
         if name.isalpha():
             os.system('cls' if os.name == 'nt' else 'clear')
-            break
+            return name
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             print("ERORR: Imię może zawierać tylko litery. Wpisz 0, by wyjść.")
+
+def add_surname():
     print("Wpisz 0, by wyjść")
     while True:
         surname = input("Wprowadź nazwisko: ")
-        if surname==0:
-            return
+        if surname=="0":
+            return "0"
         if surname.isalpha():
             os.system('cls' if os.name == 'nt' else 'clear')
-            break
+            return surname
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             print("ERORR: Nazwisko może zawierać tylko litery. Wpisz 0, by wyjść.")
+
+def add_user():
+    name = add_name()
+    if name == "0":
+        return
+    surname = add_surname()
+    if surname == "0":
+        return
     i=0
     username = make_username(name, surname)
     access = acces_change()
@@ -197,8 +202,9 @@ def del_user():
 
 def change_user():
     err=0
+    cont=1
     #Wysukiwanie użytkownika
-    while True:
+    while cont:
         for user in dt.users:
             print(f"imię: {user[0]}, nazwisko: {user[1]}, nazwa: {user[2]}, hasło: {user[3]}, dostęp: {user[4]}")
         if err==0:
@@ -206,24 +212,52 @@ def change_user():
         else:
             print("ERROR: Nie znaleziono użytkownika. Wpisz 0, by wyjść.")
         change_user = input("\nNazwa użytkownika do zmiany: ")
-        for user in dt.users:
-            if user[2] == change_user:
-                os.system('cls' if os.name == 'nt' else 'clear')
+        if change_user == "0":
+            return
+        i=0
+        os.system('cls' if os.name == 'nt' else 'clear')
+        while i<len(dt.users):
+            if dt.users[i][2].lower() == change_user.lower():
+                cont=0
                 break
-    #Zmiana użytkownika        
-    print("\n1 - imię\n2 - nazwisko\nnazwa użytkownika - 3\nhasło - 4\ndostęp - 5")
-    if err==1:
-        print("ERROR: Wprowadź cyfrę z przedziału 1 - 5. Wpisz 0, by wyjść.")
-    else:
-        print("Wpisz 0, by wyjść.")
-    try:
-        option = int(input("\ninput: "))
-        if option not in range (1, 6):
-            raise ValueError()
-    except ValueError:
+            i+=1 
         err=1
-        os.system('cls' if os.name == 'nt' else 'clear')
-    else:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        
-    print
+    #Zmiana użytkownika
+    err=0
+    while True:
+        print(f"imię: {dt.users[i][0]}, nazwisko: {dt.users[i][1]}, nazwa: {dt.users[i][2]}, hasło: {dt.users[i][3]}, dostęp: {dt.users[i][4]}")
+        print("\n1 - imię\n2 - nazwisko\n3 - nazwa użytkownika\n4 - hasło\n5- dostęp ")
+        if err==1:
+            print("ERROR: Wprowadź cyfrę z przedziału 0 - 5. Wpisz 0, by wyjść.")
+        else:
+            print("Wpisz 0, by wyjść.")
+        try:
+            option = int(input("\ninput: "))
+            if option not in range (0, 6):
+                raise ValueError()
+        except ValueError:
+            err=1
+            os.system('cls' if os.name == 'nt' else 'clear')
+        else:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            break
+    if option==0:
+        return
+    elif option==1:
+       name = add_name()
+       if name == "0":
+            return
+       dt.users[i][2] = make_username(name, dt.users[i][1])
+       dt.users[i][0] = name
+    elif option==2:
+        surname = add_surname()
+        if surname == "0":
+            return
+        dt.users[i][2] = make_username(dt.users[i][0], surname)
+        dt.users[i][1] = surname
+    elif option==3:
+        dt.users[i][2]= input("Wprowadź nazwę użytkownika: ")
+    elif option==4:
+        dt.users[i][3]= input("Wprowadź hasło: ")
+    elif option==5:
+        dt.users[i][4]= acces_change()

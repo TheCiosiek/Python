@@ -112,7 +112,6 @@ def make_username(name,surname):
             i+=1
     except IndexError:
         pass
-    #Sprawdzenie czy istenije już nazwa
     i=1
     cont=1
     #sprawdzenie czy istnieje nazwa bez liczby
@@ -199,6 +198,67 @@ def del_user():
             i+=1
         err=1
 
+def add_username():
+    err=0
+    while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print("Login musi mieć przynajmniej 6 znaków. Wpisz 0, by wyjść.")
+        if err==1:
+            print("ERROR: Login już istnieje.")
+        if err==2:
+            print("ERROR: Login ma mniej niż 6 znaków.")
+            err=0
+        username=input("\nWprowadź login: ")
+        if len(username)<6:
+            err=2
+            continue
+        if username=="0":
+            return "0"
+        for user in dt.users:
+            if user[2]==username:
+                os.system('cls' if os.name == 'nt' else 'clear')
+                err==1
+                break
+        if err==0:
+            return username
+
+
+def add_password():
+    while True:
+        password_pass={"Sześć znaków":0,"Duże litery":0,"Małe litery":0,"Cyfry":0,"Znaki":0}
+        all_ok=1
+        os.system('cls' if os.name == 'nt' else 'clear')
+        print(f"Hasło musi mieć przynajmniej 8 znaków, jedną małą i dużą literę, cyfrę oraz znak. Wpisz 0 by wyjść.")
+        password=input("Wprowadź hasło: ")
+        if password=="0":
+            return "0"
+        if len(password)>7:
+            password_pass["Sześć znaków"]+=1
+        for i in password:
+            if i.isalpha():
+                if ord(i) in range(65,91):
+                    password_pass["Duże litery"]+=1
+                else:
+                    password_pass["Małe litery"]+=1
+            elif i.isdigit():
+                password_pass["Cyfry"]+=1
+            else:
+                password_pass["Znaki"]+=1
+        s=" "
+        for i in password_pass:
+            if password_pass[i]==0:
+                ok=False
+                all_ok=0
+            else:
+                ok=True
+            print (f"{i}:{s*(12-len(i))} {ok}")        
+        if not all_ok:
+            input(f"ERROR: Rejestracja niepoprawna. Wprowadź enter by kontynuować...")
+        else: 
+            input(f"Rejestracja poprawna. Wprowadź enter by kontynuować...")
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return password
+        
 
 def change_user():
     err=0
@@ -220,13 +280,13 @@ def change_user():
             if dt.users[i][2].lower() == change_user.lower():
                 cont=0
                 break
-            i+=1 
+            i+=1
         err=1
     #Zmiana użytkownika
     err=0
     while True:
         print(f"imię: {dt.users[i][0]}, nazwisko: {dt.users[i][1]}, nazwa: {dt.users[i][2]}, hasło: {dt.users[i][3]}, dostęp: {dt.users[i][4]}")
-        print("\n1 - imię\n2 - nazwisko\n3 - nazwa użytkownika\n4 - hasło\n5- dostęp ")
+        print("\n1 - imię\n2 - nazwisko\n3 - nazwa użytkownika\n4 - hasło\n5 - dostęp ")
         if err==1:
             print("ERROR: Wprowadź cyfrę z przedziału 0 - 5. Wpisz 0, by wyjść.")
         else:
@@ -244,20 +304,30 @@ def change_user():
     if option==0:
         return
     elif option==1:
-       name = add_name()
-       if name == "0":
+        name = add_name()
+        if name == "0":
             return
-       dt.users[i][2] = make_username(name, dt.users[i][1])
-       dt.users[i][0] = name
+        if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
+            dt.users[i][2] = make_username(name, dt.users[i][1])
+        dt.users[i][0] = name
     elif option==2:
         surname = add_surname()
         if surname == "0":
             return
-        dt.users[i][2] = make_username(dt.users[i][0], surname)
+        if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
+            dt.users[i][2] = make_username(dt.users[i][0], surname)
         dt.users[i][1] = surname
     elif option==3:
-        dt.users[i][2]= input("Wprowadź nazwę użytkownika: ")
+        username = add_username()
+        if username == "0":
+            return
+        dt.users[i][2]= username
     elif option==4:
-        dt.users[i][3]= input("Wprowadź hasło: ")
+        password = add_password()
+        if password == "0":
+            return
+        dt.users[i][3]=password
     elif option==5:
         dt.users[i][4]= acces_change()
+    os.system('cls' if os.name == 'nt' else 'clear')
+    input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")

@@ -1,6 +1,6 @@
 import random
 import os
-import database as dt
+import data as dt
 import unicodedata
 def menu():
     while dt.auth[0]==True:
@@ -173,6 +173,7 @@ def add_user():
         password += random.choice(random.choice(["abcdefghijlklmnopqrstuvwxyz","ABCDEFGHIJLKMNOPQRSTUVWXYZ","123456789","~`!@#$%^&*()_-+="]))
     input(f"Utworzona nazwa użytkownika: {username}\nUtworzone hasło: {password}\nDostęp:\n  Pracownicy - {access[0]}\n  Zamówienia - {access[1]}\n  Produkty - {access[2]}\n\nWprowadź enter by kontynuować...")
     dt.users.append([name, surname, username, password, access])
+    dt.write_users()
     return
 
 def del_user():
@@ -193,6 +194,7 @@ def del_user():
         for user in dt.users:
             if user[2] == del_user:
                 del dt.users[i]
+                dt.write_users()
                 input("Usuwanie użytkownika poprawne. Wprowadź enter by kontynuować...")
                 return
             i+=1
@@ -310,6 +312,7 @@ def change_user():
         if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
             dt.users[i][2] = make_username(name, dt.users[i][1])
         dt.users[i][0] = name
+        dt.write_users()
     elif option==2:
         surname = add_surname()
         if surname == "0":
@@ -317,18 +320,22 @@ def change_user():
         if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
             dt.users[i][2] = make_username(dt.users[i][0], surname)
         dt.users[i][1] = surname
+        dt.write_users()
     elif option==3:
         username = add_username()
         if username == "0":
             return
         dt.users[i][2]= username
+        dt.write_users()
     elif option==4:
         password = add_password()
         if password == "0":
             return
         dt.users[i][3]=password
+        dt.write_users()
     elif option==5:
         dt.users[i][4]= acces_change()
+        dt.write_users()
     os.system('cls' if os.name == 'nt' else 'clear')
     input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")
 #Dziękuje za dokładne sprawdzenie programu!

@@ -1,16 +1,5 @@
 [
   [
-    "Jim",
-    "Halpert",
-    "jimhal",
-    "Pass123!",
-    [
-      1,
-      1,
-      0
-    ]
-  ],
-  [
     "Pam",
     "Beesly",
     "pambee",
@@ -162,6 +151,28 @@
       0,
       1,
       2
+    ]
+  ],
+  [
+    "Adrian",
+    "Szy\u0142ak",
+    "adrszy",
+    "haslo",
+    [
+      0,
+      2,
+      2
+    ]
+  ],
+  [
+    "Jim",
+    "Halpert",
+    "jimhal",
+    "6h%Ta5mK",
+    [
+      0,
+      2,
+      1
     ]
   ]
 ]

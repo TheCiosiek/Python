@@ -3,14 +3,13 @@ import random
 import employees
 import products
 import orders
-import database as dt
-import json
+import data as dt
 
 def options():
-    cnt=0
     err=0
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
+        cnt=0
         print_out=["Pracownicy - ","Zamówiena - ","Produkty - "]
         for i in range (3):
             if dt.auth[1][4][i]:
@@ -39,6 +38,7 @@ def options():
         i+=1
 
 def login():
+    dt.load_users()
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         print("Wpisz 0, by wyjść.")

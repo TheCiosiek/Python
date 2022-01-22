@@ -18,7 +18,7 @@ def choose_option_orders():
 
 
 
-def menu_logged(users):
+def menu():
     option=1
     auth = [False, "access"]
     while option!=0:

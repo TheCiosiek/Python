@@ -4,6 +4,7 @@ import employees
 import products
 import orders
 import database as dt
+import json
 
 def options():
     cnt=0
@@ -70,6 +71,18 @@ while True:
                 option=options()
                 if option == 0:
                     employees.menu()
+                if option == 1:
+                    orders.menu()
+                else:
+                    #products.menu()
+                    pass
+        elif dt.auth[1][4][0]:
+            employees.menu()
+        elif dt.auth[1][4][1]:
+            orders.menu()
+        else:
+            #products.menu()
+            pass
             
     elif dt.auth[0] == None:
         break

@@ -17,7 +17,7 @@ def options():
             else:
                 cnt+=1
         if err==1:
-            print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {i-cnt+1}")
+            print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {3-cnt}")
         try:
             option = int(input("\ninput: "))
             if option not in range (1, i-cnt+2):

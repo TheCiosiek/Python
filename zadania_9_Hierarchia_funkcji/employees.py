@@ -331,3 +331,4 @@ def change_user():
         dt.users[i][4]= acces_change()
     os.system('cls' if os.name == 'nt' else 'clear')
     input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")
+#Dziękuje za dokładne sprawdzenie programu!

@@ -17,12 +17,14 @@ def menu():
             dt.auth = None, "user"
 
 def options():
-    error=0
+    err=0
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
-        print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Wyloguj się\n(5) Wyjdź\n")
+        print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Wyloguj się\n(5) Wyjdź")
+        if err==1:
+            print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
         try:
-            option=int(input("input: "))
+            option=int(input("\ninput: "))
             if option not in range(1,6):
                 raise ValueError
             else: 
@@ -30,7 +32,7 @@ def options():
                 return option
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("ERROR: Wprowadzono złą wartość, spróbuj jeszcze raz.")
+            err=1
 
 def acces_change():
     access=[]

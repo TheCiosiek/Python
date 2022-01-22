@@ -1,7 +1,5 @@
-import os
-import data as dt
 
-def options():
+def choose_option_orders():
     error=0
     while True:
         os.system('cls' if os.name == 'nt' else 'clear')
@@ -18,25 +16,24 @@ def options():
         except ValueError:
             error=1
 
-def menu():
-    dt.load_products()
-    while dt.auth[0]==True:
-        option = options()
-        if option == 1:
-            add_order()
-        elif option == 2:
-            del_order()
-        elif option == 3:
-            change_order()
-        elif option == 4:
-            dt.auth=False, "user"
-        elif option == 5:
-            dt.auth = None, "user"
 
-def print_list():
-    for item in dt.products():
-        print(f"sztuk ryz: {item[0]}\nformat: A{item[1]}\ngramatura: {item[2]}g/m\nnazwa: {item[3]}\nproducent: {item[4]}")
-        
-def add_order():
-    print_list()
-    
+
+def menu():
+    option=1
+    auth = [False, "access"]
+    while option!=0:
+        option=choose_option()
+        if option == 1:
+            auth = login(users)
+        if option == 2:
+            movies.update(add_movie(movies,is_authenticated))
+        if option == 3:
+           movies.update(modify_movie(movies, is_authenticated))
+        if option == 4:
+            get_movies(movies)
+        if option == 5:
+            check_movie_availability(movies)
+        if option == 6:
+            movies.update(rent_movie(movies, is_authenticated))
+
+    return movies, users

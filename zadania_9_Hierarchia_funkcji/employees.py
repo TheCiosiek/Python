@@ -12,27 +12,38 @@ def menu():
         elif option == 3:
             change_user()
         elif option == 4:
-            dt.auth=False, "user"
+            return
         elif option == 5:
+            dt.auth=False, "user"
+        elif option == 6:
             dt.auth = None, "user"
 
 def options():
     err=0
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
-        print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Wyloguj się\n(5) Wyjdź")
-        if err==1:
-            print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
+        if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
+            print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
+            if err==1:
+                print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
+        else:
+            print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Wyloguj się\n(5) Wyjdź")
+            if err==1:
+                print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
         try:
             option=int(input("\ninput: "))
-            if option not in range(1,6):
-                raise ValueError
-            else: 
-                os.system('cls' if os.name == 'nt' else 'clear')
-                return option
+            if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
+                if option not in range(1,7):
+                    raise ValueError
+            else:
+                if option not in range(1,6):
+                    raise ValueError
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
             err=1
+        else: 
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return option
 
 def acces_change():
     access=[]

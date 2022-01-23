@@ -36,18 +36,14 @@ def menu():
             dt.auth = None, "user"
 
 def filter_list(products, filters):
-    i=0
+    i=1
     for filter in filters:
         products_filtered = []
-        if filter == 0:
+        if filter == []:
             for product in products:
                 products_filtered.append(product)
         else:
-            if i==0:
-                for product in products:
-                    if product[0] in filter:
-                        products_filtered.append(product)
-            elif i==1:
+            if i==1:
                 for product in products:
                     if product[1] in filter:
                         products_filtered.append(product)
@@ -63,53 +59,61 @@ def filter_list(products, filters):
                 for product in products:
                     if product[4] in filter:
                         products_filtered.append(product)
+            elif i==5:
+                for product in products:
+                    if product[5] in filter:
+                        products_filtered.append(product)
+            elif i==6:
+                for product in products:
+                    if product[6]>=int(filter[0]) and product[6]<=int(filter[1]):
+                        products_filtered.append(product)
             products = products_filtered
         i+=1
     return products
 
 def print_available_products(products, filters):
-    available_products=[[],[],[],[],[],[0]]
+    available_products=[[],[],[],[],[],[]]
     empty=True
     for product in products:
-        if product[0] not in available_products[0]:
-            products_filtered.append(product)
-            not_empty=False
-        if product[1] not in available_products[1]:
-            products_filtered.append(product)
-            not_empty=False
-        if product[2] not in available_products[2]:
-            products_filtered.append(product)
-            not_empty=False
-        if product[3] not in available_products[3]:
-            products_filtered.append(product)
-            not_empty=False
-        if product[4] not in available_products[4]:
-            products_filtered.append(product)
-            not_empty=False
-    i=0
+        if product[1] not in available_products[0]:
+            available_products[0].append(product[1])
+            empty=False
+        if product[2] not in available_products[1]:
+            available_products[1].append(product[2])
+            empty=False
+        if product[3] not in available_products[2]:
+            available_products[2].append(product[3])
+            empty=False
+        if product[4] not in available_products[3]:
+            available_products[3].append(product[4])
+            empty=False
+        if product[5] not in available_products[4]:
+            available_products[4].append(product[5])
+            empty=False
     print_filters(available_products)
     if not filters[5]:
-        print("cena: przedział")
         empty == False
     return available_products, empty
 
-def add_filters(products, filters):
-    while True:
+def add_filter(products, filters):
+    err=1
+    while err==1:
+        err=0
         print("Dostępne filtry:")
-        available_products, empty = print_available_products(products)
-        print()
+        available_products, empty = print_available_products(products, filters)
         if not filters[5]:
             available_products[5]=1
-        cnt=1
+        cnt=0
+        print()
         print('Filtry do dodania:')
         if empty:
             input("ERROR: Brak filtrów do dodania. Wprowadź enter by kontynuować...")
             return [[],[],[],[],[],[]]
         else:
-            print_out=["producent - ","nazwa - ","ryzy - ","format - ","gramatura -","cena -"]
+            print_out=[" - producent"," - nazwa"," - ryzy"," - format"," - gramatura"," - cena"]
             for i in range (6):
                 if available_products[i]:
-                    print(f"{print_out[i]}{i-cnt+1}")
+                    print(f"{i-cnt+1}{print_out[i]}")
                 else:
                     cnt+=1
             if err==1:
@@ -122,40 +126,109 @@ def add_filters(products, filters):
                 err=1
                 os.system('cls' if os.name == 'nt' else 'clear')
             else:
-                break
-
+                #ponieważ break wyrzuca mnie z while
+                err=0
         os.system('cls' if os.name == 'nt' else 'clear')
         i=0
         cnt=0
-        while i<len(6):
+        s=", "
+        add_filters=[]
+        while i<6:
             if available_products[i]:
                 cnt+=1
                 if cnt==option:
                     if i==0:
-                        print("producent: ",end='')
-                        print(", ".join(filter))
+                        while True:
+                            print(f"Dostępne filtry(dostawcy): {s.join(available_products[i])}")
+                            inp = input("Wpisz 0 by wyjść.\nwprowadź producenta: ")
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if inp=="0":
+                                if add_filters:
+                                    return [add_filters,[],[],[],[],[]]
+                                else:
+                                    [[],[],[],[],[],[]]
+                            elif inp in add_filters:
+                                print("ERROR: Filtr już znajduje się w wybranych filtrach.")
+                            elif inp not in available_products[0]:
+                                print("ERROR: Brak producenta w wybranych filtrach.")
+                            else:
+                                add_filters.append(inp)
+                                print("SUCCESS: Dodano filtr.")
                     elif i==1:
-                        print("nazwa: ",end='')
-                        print(", ".join(filter))
+                        while True:
+                            print(f"Dostępne filtry(dostawcy): {s.join(available_products[i])}")
+                            inp = input("Wpisz 0 by wyjść.\nwprowadź nazwę: ")
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if inp=="0":
+                                if add_filters:
+                                    return [[],add_filters,[],[],[],[]]
+                                else:
+                                    [[],[],[],[],[],[]]
+                            elif inp in add_filters:
+                                print("ERROR: Filtr już znajduje się w wybranych filtrach.")
+                            elif inp not in available_products[1]:
+                                print("ERROR: Brak nazwy w dostępnych filtrach.")
+                            else:
+                                add_filters.append(inp)
+                                print("SUCCESS: Dodano filtr.")
                     elif i==2:
-                        print("ryzy: ",end='')
-                        print(", ".join(filter))
+                        while True:
+                            print(f"Dostępne filtry(dostawcy): {s.join(available_products[i])}")
+                            inp = input("Wpisz 0 by wyjść.\nwprowadź ilość ryz: ")
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if inp=="0":
+                                if add_filters:
+                                    return [[],[],add_filters,[],[],[]]
+                                else:
+                                    [[],[],[],[],[],[]]
+                            elif inp in add_filters:
+                                print("ERROR: Filtr już znajduje się w wybranych filtrach.")
+                            elif inp not in available_products[2]:
+                                print("ERROR: Brak ryzy w dostępnych filtrach.")
+                            else:
+                                add_filters.append(inp)
+                                print("SUCCESS: Dodano filtr.")
                     elif i==3:
-                        print("format: ",end='')
-                        print(", A".join(filter))
+                        while True:
+                            print(f"Dostępne filtry(dostawcy): {s.join(available_products[i])}")
+                            inp = input("Wpisz 0 by wyjść.\nwprowadź format: ")
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if inp=="0":
+                                if add_filters:
+                                    return [[],[],[],add_filters,[],[]]
+                                else:
+                                    [[],[],[],[],[],[]]
+                            elif inp in add_filters:
+                                print("ERROR: Filtr już znajduje się w wybranych filtrach.")
+                            elif inp not in available_products[3]:
+                                print("ERROR: Brak formatu w dostępnych filtrach.")
+                            else:
+                                add_filters.append(inp)
+                                print("SUCCESS: Dodano filtr.")
                     elif i==4:
-                        print("gramatura: ",end='')
-                        print("g/m, ".join(filter),end='g/m\n')
-
+                        while True:
+                            print(f"Dostępne filtry(gramatura): {s.join(available_products[i])}")
+                            inp = input("Wpisz 0 by wyjść.\nwprowadź gramaturę: ")
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if inp=="0":
+                                if add_filters:
+                                    return [[],[],[],[],add_filters,[]]
+                                else:
+                                    [[],[],[],[],[],[]]
+                            elif inp in add_filters:
+                                print("ERROR: Filtr już znajduje się w wybranych filtrach.")
+                            elif inp not in available_products[4]:
+                                print("ERROR: Brak gramatury w dostępnych filtrach.")
+                            else:
+                                add_filters.append(inp)
+                                print("SUCCESS: Dodano filtr.")
                     elif i==5:
                         inp = input("Podaj cenę: od ")
                         os.system('cls' if os.name == 'nt' else 'clear')
                         inp2 = input(f"Podaj cenę: od {inp} do ")
+                        os.system('cls' if os.name == 'nt' else 'clear')
                         return [[],[],[],[],[],[inp,inp2]]
-                i+=1
-        
-
-
+            i+=1
 
 def change_filters(products, filters):
     products_filtered=[]
@@ -165,8 +238,10 @@ def change_filters(products, filters):
         #wyświetlenie wyfiltrowanych produktów
         for product in products:
                 i+=1
-                print(f"ID: {i} producent: {product[0]} nazwa: {product[1]} ryzy: {product[2]} format: A{product[3]} gramatura: {product[4]}g/m cena: {product[5]}zł")
+                print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+        print("Filtry:")
         print_filters(filters)
+        print()
         print("1 - dodaj filtr\n2 - usuń filtr\n0 - wyjdź")
         if err==1:
             print("ERROR: Wprowadź cyfrę z przedziału 1 - 2.")
@@ -180,8 +255,13 @@ def change_filters(products, filters):
         else:
             if option == 0:
                 return products, filters
-            elif option == 1:
-                filters += add_filter(products,filters)
+            elif option == 1: 
+                add_elem = add_filter(products,filters)
+                i=0
+                while i <6:
+                    filters[i]+=add_elem[i]
+                    i+=1
+                #filters = list(filters)
             elif option == 2:
                filters = del_filters()
             products = filter_list(products, filters)
@@ -191,7 +271,7 @@ def change_filters(products, filters):
 def print_filters(filters):
     i=0
     for filter in filters:
-        if filter == 0:
+        if filter == []:
             pass
         elif i==0:
             print("producent: ",end='')
@@ -210,23 +290,22 @@ def print_filters(filters):
             print("g/m, ".join(filter),end='g/m\n')
         elif i==5:
             print("cena: ",end='')
-            print(" - ".join(filter),end='g/m\n')
+            print(" - ".join(filter))
         i+=1
 
 def add_order():
-    filters=[0, 0, 0, 0, 0]
+    filters=[[], [], [], [], [],[]]
     products_filtered=dt.products
     while True:
         i=0
         for product in products_filtered:
             i+=1
             print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
-        print("Filtry:")
+        print("Filtry:\n")
         print_filters(filters)
-        print()
         if len(products_filtered):
             print(f"f - zmiana filtrów\ns - sortuj(cena)\n1 do {i} - produkty\n0 - wyjście")
-            inp = input("input: ")
+            inp = input("\ninput: ")
             os.system('cls' if os.name == 'nt' else 'clear')
             if inp == "f":
                 products_filtered, filters = change_filters(products_filtered, filters)

@@ -104,7 +104,8 @@ def change_order():
                             break
             elif option == 2:
                 err2=0
-                while True:
+                cont=1
+                while cont==1:
                         filter_orders(filters[0],filters[1],filters[2],filters[3])
                         if err2==1:
                             print("ERROR: Nie znaleziono numeru zamówienia. Wpisz 0 by wyjść.")
@@ -113,7 +114,9 @@ def change_order():
                         try:
                             inp=int(input("\nnumer zamówienia: "))
                             os.system('cls' if os.name == 'nt' else 'clear')
-                            if str(inp) not in orders.keys():
+                            if inp==0:
+                                pass
+                            elif str(inp) not in orders.keys():
                                 raise ValueError
                         except ValueError:
                             os.system('cls' if os.name == 'nt' else 'clear')
@@ -134,26 +137,34 @@ def change_order():
                                     else:
                                         status = a_status[0]
                                     inp=str(inp)
-                                    print(f"numer zamówienia {inp}, status {status} , data {orders[inp][1]}:\n    producent: {orders[inp][0][1]} nazwa: {orders[inp][0][2]} ryzy: {orders[inp][0][3]} format: A{orders[inp][0][4]} gramatura: {orders[inp][0][5]}g/m cena: {orders[inp][0][6]}zł")
+                                    for product in dt.products:
+                                        if product[0] in orders[inp][0]:
+                                            print(f"numer zamówienia {inp}, status {status} , data {orders[inp][1]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                            break
+                                    print("0 - anulowane\n1 - przyjęte\n2 - wysłane\n3 - dostarczone")
                                     if err==1:
-                                        print("ERROR: Nie znaleziono numeru zamówienia. Wpisz 0 by wyjść.")
+                                        print("ERROR: Wprowadź cyfrę z przedziału 0 - 3.")
                                     try:
-                                        inp2=input("\nnowy status:")
+                                        inp2=int(input("\nnowy status: "))
                                         os.system('cls' if os.name == 'nt' else 'clear')
-                                        if inp not in range(0, 4):
+                                        if inp2 not in range(0, 4):
                                             raise ValueError
                                     except ValueError:
                                         os.system('cls' if os.name == 'nt' else 'clear')
                                         err=1
                                     else:
-                                        #dt.orders[inp][2]=inp2
-                                        input("załadowano")
+                                        dt.orders[inp][2]=inp2
+                                        dt.write_orders()
+                                        cont=0
+                                        break
                             
 
 
 def orders_history():
-    print_orders(1, 0, 0, 1)
+    filter_orders(1, 0, 0, 1)
     input('Wprowadź enter by kontynuowac...')
+    os.system('cls' if os.name == 'nt' else 'clear')
+
 def menu():
     dt.load_orders()
     dt.load_products()

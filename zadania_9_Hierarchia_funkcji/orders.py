@@ -12,7 +12,7 @@ def options():
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
         else:
-            print("(1) Dodaj zamówienie\n(2) Historia zamówień\n(3) Zmień zamówienie\n(4) Wyloguj się\n(5) Wyjdź")
+            print("(1) Dodaj zamówienie\n(2) Historia zamówień\n(3) Zmień status\n(4) Wyloguj się\n(5) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
         try:
@@ -32,23 +32,125 @@ def options():
             os.system('cls' if os.name == 'nt' else 'clear')
             return option     
 
+def filter_orders(i,j,k,l):
+    orders={}
+    for order_id,order in dt.orders.items():
+        if order[2] == 0 and i:
+            orders[order_id]=order
+        elif order[2] == 1 and j:
+            orders[order_id]=order
+        elif order[2] == 2 and k:
+            orders[order_id]=order
+        elif order[2] == 3 and l:
+            orders[order_id]=order
+    i=0
+    a_status = ["anulowane","przyjęte","wysłane","dostarczone"]
+    for order_id, order in orders.items():
+        if order[2] == 0:
+            status = a_status[0]
+        elif order[2] == 1:
+            status = a_status[1]
+        elif order[2] == 2:
+            status = a_status[2]
+        else:
+            status = a_status[3]
+            
+        for product in dt.products:
+            if order_id == product[0]:
+                i+=1
+                print(f"numer zlecenia {order_id}, status {status}, data {order[1]}:\n    pozycja {i}, ilość {product[0]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                break
+    return orders
+
 def change_order():
-    #TODO
-    pass
+    err=0
+    filters=[1,1,1,1]
+    while True:
+        orders = filter_orders(filters[0],filters[1],filters[2],filters[3])
+        print("\n1 - zmień filtry\n2 - zmień zamówienie\n0 - wyjdź")
+        if err==1:
+            print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+        try:
+            option=int(input("\ninput: "))
+            os.system('cls' if os.name == 'nt' else 'clear')
+            if option not in range(0,3):
+                raise ValueError
+        except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            err=1
+        else:
+            if option == 0:
+                return
+            elif option == 1:
+                print_out=("Anulowane:\n0 - nie\n1 - tak","Przyjęte\n0 - nie\n1 - tak", "Wysłane:\n0 - nie\n1 - tak", "Dostarczone:\n0 - nie\n1 - tak")
+                i=0
+                for item in print_out:
+                    while True:
+                        print(item)
+                        if err==1:
+                            print("ERROR: Wprowadź cyfrę z przedziału 0 - 1.")
+                        try:
+                            option=int(input("\ninput: "))
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if option not in range(0,2):
+                                raise ValueError
+                        except ValueError:
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            err=1
+                        else:
+                            filters[i]=option
+                            i+=1
+                            break
+            elif option == 2:
+                len_dict = len(orders)
+                while True:
+                        filter_orders(filters[0],filters[1],filters[2],filters[3])
+                        if err==1:
+                            print("ERROR: Nie znaleziono numeru zlecenia. Wpisz 0 by wyjść.")
+                        else:
+                            print("Wpisz 0 by wyjść.")
+                        try:
+                            inp=int(input("\nnumer zamówienia: "))
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            if inp not in range(0, len_dict):
+                                raise ValueError
+                        except ValueError:
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            err=1
+                        else:
+                            if inp == 0:
+                                break
+                            else:
+                                while True:
+                                    a_status=["anulowane","przyjęte","wysłane","dostarczone"]
+                                    if orders[inp][2] == 0:
+                                        status = a_status[0]
+                                    elif orders[inp][2] == 1:
+                                        status = a_status[0]
+                                    elif orders[inp][2] == 2:
+                                        status = a_status[0]
+                                    else:
+                                        status = a_status[0]
+                                    inp=str(inp)
+                                    print(f"numer zlecenia {inp}, status {status} , data {order[1]}:\n    producent: {orders[inp][0][0]} nazwa: {orders[inp][0][2]} ryzy: {orders[inp][0][3]} format: A{orders[inp][0][4]} gramatura: {orders[inp][0][5]}g/m cena: {orders[inp][0][6]}zł")
+                                    if err==1:
+                                        print("ERROR: Nie znaleziono numeru zlecenia. Wpisz 0 by wyjść.")
+                                    try:
+                                        inp2=input("\nnowy status:")
+                                        os.system('cls' if os.name == 'nt' else 'clear')
+                                        if inp not in range(0, 4):
+                                            raise ValueError
+                                    except ValueError:
+                                        os.system('cls' if os.name == 'nt' else 'clear')
+                                        err=1
+                                    else:
+                                        #dt.orders[inp][2]=inp2
+                                        input("załadowano")
+                            
+
 
 def orders_history():
-    for order_id,order in dt.orders.items():
-        if order[2]==0 or order[2]==3:
-            if order[0]:
-                print(f"numer zamówienia {order_id}, status anulowany:")
-            else:
-                print(f"numer zamówienia {order_id}, status dostarczno:")
-            i=0
-            for product_i, quantity in order[0].items():
-                for product in dt.products:
-                    if product_i == product[0]:
-                        i+=1
-                        print(f"    pozycja {i}, ilość {product[0]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+    print_orders(1, 0, 0, 1)
     input('Wprowadź enter by kontynuowac...')
 def menu():
     dt.load_orders()

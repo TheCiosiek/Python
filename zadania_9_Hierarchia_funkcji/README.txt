@@ -1,0 +1,1 @@
+Przepraszam. Wiem, że nie ma za dużo komentarzy i przydałby się plik README, ale nie mam już siły. Jeśli miałby Pan jakiekolwiek pytania to zapraszam do kontaktu.

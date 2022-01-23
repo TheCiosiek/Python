@@ -32,15 +32,24 @@ def options():
             os.system('cls' if os.name == 'nt' else 'clear')
             return option     
 
-def orders_hisotry():
+def change_order():
+    #TODO
+    pass
+
+def orders_history():
     for order_id,order in dt.orders.items():
         if order[2]==0 or order[2]==3:
-            print(f"numer zlecenia: {order_id}")
+            if order[0]:
+                print(f"numer zamówienia {order_id}, status anulowany:")
+            else:
+                print(f"numer zamówienia {order_id}, status dostarczno:")
             i=0
-            for product in order:
-                    i+=1
-                    print(f"pozycja {i}, ilość {order[product[0]][0]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
-
+            for product_i, quantity in order[0].items():
+                for product in dt.products:
+                    if product_i == product[0]:
+                        i+=1
+                        print(f"    pozycja {i}, ilość {product[0]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+    input('Wprowadź enter by kontynuowac...')
 def menu():
     dt.load_orders()
     dt.load_products()
@@ -242,7 +251,7 @@ def add_filters(products, filters):
                 else:
                     cnt+=1
             if err==1:
-                print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {i-cnt+2}")
+                print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {6-cnt}")
             try:
                 option = int(input("\ninput: "))
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -276,7 +285,7 @@ def del_filters(filters):
             else:
                 cnt+=1
         if err==1:
-            print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {i-cnt+2}")
+            print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {6-cnt}")
         try:
             option = int(input("\ninput: "))
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -423,13 +432,13 @@ def add_order():
                     if not order:
                         print("Brak produktów w koszyku")
                     cost=0
-                    for product in products_filtered:
+                    for product in dt.products:
                         if product[0] in order:
                             i+=1
-                            cost+=order[product[0]][0]*product[6]
-                            print(f"pozycja {i}, ilość {order[product[0]][0]}, koszt {order[product[0]][0]*product[6]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                            cost+=order[product[0]]*product[6]
+                            print(f"pozycja {i}, ilość {order[product[0]]}, koszt {order[product[0]]*product[6]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
                     print(f"razem: {cost}")
-                    print("\n1 - usuń pozycje\n2 - zrobić zamówienie\n0 - wyjść")
+                    print("\n1 - usuń pozycje\n2 - zrób zamówienie\n0 - wyjść")
                     if err==1:
                         print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
                     try:
@@ -470,14 +479,14 @@ def add_order():
 
                         elif inp == 2:
                             i=1
-                            for order in dt.orders:
+                            for order_i in dt.orders:
                                 i+=1
                             now = datetime.now()
                             dt.orders[str(i)]=[order, now.strftime("%d/%m/%y, %H:%M:%S"), 1]
                             i=0
                             while i<len(dt.products):
                                 if dt.products[i][0] in order:
-                                    dt.products[i][7]-=order[dt.products[i][0]][0]
+                                    dt.products[i][7]-=order[dt.products[i][0]]
                                 i+=1
                             dt.write_products()
                             dt.write_orders()
@@ -512,7 +521,7 @@ def add_order():
                         except ValueError:
                             err=1
                         else:
-                            order[str(product[0])]=[inp2]
+                            order[str(product[0])]=inp2
                             input("SUCCESS: Dodano produkt do koszyka.")
                             os.system('cls' if os.name == 'nt' else 'clear')
                             break

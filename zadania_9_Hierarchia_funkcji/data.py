@@ -45,7 +45,6 @@ global users, products, orders
 # products=[["1","emerson","office paper","1","4","80",20.00,57],["2","emerson","office paper","1","4","200",35.00,37],["3","emerson","office paper","1","5","80",12.00,97],["4","emerson","office paper","1","4","200",35.00,37],["5","emerson","office paper","1","3","80",70,19],["6","emerson","office paper","5","4","80",90.00,57],["7","delux","premium","5","5","200",180.00,11]]
 # write_products()
 #write_users()
-orders = {}
 #write_orders()
 auth=False, "user"
 

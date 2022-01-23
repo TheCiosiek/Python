@@ -70,11 +70,11 @@ def acces_change():
     err=0
     while True:
         try:
-            print("Dostęp do: Zamówienia.\n0 - brak dostępu\n1 - zamówienia/zmiana status\n2 - pełny dostęp")
+            print("Dostęp do: Zamówienia.\n0 - brak dostępu\n1 - dostęp")
             if err==1:
-                print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+                print("ERROR: Wprowadź cyfrę z przedziału 0 - 1.")
             option = int(input("\ninput: "))
-            if option not in range (0,3):
+            if option not in range (0,2):
                 raise ValueError()
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -87,11 +87,11 @@ def acces_change():
     err=0  
     while True:
         try:
-            print("Dostęp do: Produkty\n0 - dostęp jako klient/brak dostępu\n1 - zobaczenie dostępności produktu\n2 - pełny dostęp")
+            print("Dostęp do: Produkty\n0 - brak dostępu\n1 - dostęp")
             if err==1:
-                print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+                print("ERROR: Wprowadź cyfrę z przedziału 0 - 1.")
             option = int(input("\ninput: "))
-            if option not in range (0,3):
+            if option not in range (0,2):
                 raise ValueError()
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')

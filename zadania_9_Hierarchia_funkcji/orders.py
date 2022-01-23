@@ -56,15 +56,15 @@ def filter_orders(i,j,k,l):
             status = a_status[3]
             
         for product in dt.products:
-            if order_id == product[0]:
+            if product[0] in order[0]:
                 i+=1
-                print(f"numer zlecenia {order_id}, status {status}, data {order[1]}:\n    pozycja {i}, ilość {product[0]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                print(f"numer zlecenia {order_id}, status {status}, data {order[1]}:\n    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
                 break
     return orders
 
 def change_order():
-    err=0
     filters=[1,1,1,1]
+    err=0
     while True:
         orders = filter_orders(filters[0],filters[1],filters[2],filters[3])
         print("\n1 - zmień filtry\n2 - zmień zamówienie\n0 - wyjdź")
@@ -79,6 +79,7 @@ def change_order():
             os.system('cls' if os.name == 'nt' else 'clear')
             err=1
         else:
+            err=0
             if option == 0:
                 return
             elif option == 1:
@@ -102,25 +103,26 @@ def change_order():
                             i+=1
                             break
             elif option == 2:
-                len_dict = len(orders)
+                err2=0
                 while True:
                         filter_orders(filters[0],filters[1],filters[2],filters[3])
-                        if err==1:
+                        if err2==1:
                             print("ERROR: Nie znaleziono numeru zlecenia. Wpisz 0 by wyjść.")
                         else:
                             print("Wpisz 0 by wyjść.")
                         try:
                             inp=int(input("\nnumer zamówienia: "))
                             os.system('cls' if os.name == 'nt' else 'clear')
-                            if inp not in range(0, len_dict):
+                            if str(inp) not in orders.keys():
                                 raise ValueError
                         except ValueError:
                             os.system('cls' if os.name == 'nt' else 'clear')
-                            err=1
+                            err2=1
                         else:
                             if inp == 0:
                                 break
                             else:
+                                inp=str(inp)
                                 while True:
                                     a_status=["anulowane","przyjęte","wysłane","dostarczone"]
                                     if orders[inp][2] == 0:
@@ -132,7 +134,7 @@ def change_order():
                                     else:
                                         status = a_status[0]
                                     inp=str(inp)
-                                    print(f"numer zlecenia {inp}, status {status} , data {order[1]}:\n    producent: {orders[inp][0][0]} nazwa: {orders[inp][0][2]} ryzy: {orders[inp][0][3]} format: A{orders[inp][0][4]} gramatura: {orders[inp][0][5]}g/m cena: {orders[inp][0][6]}zł")
+                                    print(f"numer zlecenia {inp}, status {status} , data {orders[inp][1]}:\n    producent: {orders[inp][0][1]} nazwa: {orders[inp][0][2]} ryzy: {orders[inp][0][3]} format: A{orders[inp][0][4]} gramatura: {orders[inp][0][5]}g/m cena: {orders[inp][0][6]}zł")
                                     if err==1:
                                         print("ERROR: Nie znaleziono numeru zlecenia. Wpisz 0 by wyjść.")
                                     try:

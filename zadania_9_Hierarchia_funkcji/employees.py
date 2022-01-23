@@ -2,6 +2,7 @@ import random
 import os
 import data as dt
 import unicodedata
+
 def menu():
     while dt.auth[0]==True:
         option = options()

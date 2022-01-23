@@ -38,6 +38,8 @@ def options():
             else:
                 if option not in range(1,6):
                     raise ValueError
+                elif option >3:
+                    option+=1
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
             err=1

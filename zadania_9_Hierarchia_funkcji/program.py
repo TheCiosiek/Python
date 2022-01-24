@@ -74,16 +74,13 @@ while True:
                 if option == 1:
                     orders.menu()
                 else:
-                    #products.menu()
-                    pass
+                    products.menu()
         elif dt.auth[1][4][0]:
             employees.menu()
         elif dt.auth[1][4][1]:
             orders.menu()
         else:
-            #products.menu()
-            pass
-            
+            products.menu()
     elif dt.auth[0] == None:
         break
         

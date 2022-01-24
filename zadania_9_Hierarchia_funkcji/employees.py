@@ -24,11 +24,11 @@ def options():
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
-            print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
+            print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień użytkownika\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
         else:
-            print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień dane użytkownika\n(4) Wyloguj się\n(5) Wyjdź")
+            print("(1) Dodaj użytkownika\n(2) Usuń użytkownika\n(3) Zmień użytkownika\n(4) Wyloguj się\n(5) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
         try:

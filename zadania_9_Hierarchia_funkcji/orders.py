@@ -4,15 +4,33 @@ import operator
 from datetime import datetime
 import numpy as np
 
+def menu():
+    dt.load_orders()
+    dt.load_products()
+    while dt.auth[0]==True:
+        option = options()
+        if option == 1:
+            add_order()
+        elif option == 2:
+            orders_history()
+        elif option == 3:
+            change_order()
+        elif option == 4:
+            return
+        elif option == 5:
+            dt.auth=False, "user"
+        elif option == 6:
+            dt.auth = None, "user"
+
 def options():
     err=0
     while True:
         if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
-            print("(1) Dodaj zamówienie\n(2) Wyświetl zamówienia\n(3) Zmień zamówienie\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
+            print("(1) Dodaj zamówienie\n(2) Wyświetl zamówienia\n(3) Zmień status\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
         else:
-            print("(1) Dodaj zamówienie\n(2) Historia zamówień\n(3) Zmień status\n(4) Wyloguj się\n(5) Wyjdź")
+            print("(1) Dodaj zamówienie\n(2) Wyświetl zamówienia\n(3) Zmień status\n(4) Wyloguj się\n(5) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
         try:
@@ -178,8 +196,6 @@ def change_order():
                                         dt.write_orders()
                                         cont=0
                                         break
-                            
-
 
 def orders_history():
     while True:
@@ -209,24 +225,6 @@ def orders_history():
                 filter_orders(1, 0, 0, 1)
                 input('Wprowadź enter by kontynuowac...')
                 os.system('cls' if os.name == 'nt' else 'clear')
-
-def menu():
-    dt.load_orders()
-    dt.load_products()
-    while dt.auth[0]==True:
-        option = options()
-        if option == 1:
-            add_order()
-        elif option == 2:
-            orders_history()
-        elif option == 3:
-            change_order()
-        elif option == 4:
-            return
-        elif option == 6:
-            dt.auth=False, "user"
-        elif option == 7:
-            dt.auth = None, "user"
 
 def filter_list(filters):
     i=1

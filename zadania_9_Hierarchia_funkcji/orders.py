@@ -122,15 +122,19 @@ def change_order():
                             os.system('cls' if os.name == 'nt' else 'clear')
                             err2=1
                         else:
+                            if orders[str(inp)][2] == 0:
+                                input("ERROR: Nie można zmienić statusu anulowanego zamówienia. Wprowadź enter by wyjść...")
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                break
                             if inp == 0:
                                 break
                             else:
                                 inp=str(inp)
                                 while True:
                                     a_status=["anulowane","przyjęte","wysłane","dostarczone"]
-                                    if orders[inp][2] == 0:
-                                        status = a_status[0]
-                                    elif orders[inp][2] == 1:
+                                    # if orders[inp][2] == 0:
+                                    #     status = a_status[0]
+                                    if orders[inp][2] == 1:
                                         status = a_status[0]
                                     elif orders[inp][2] == 2:
                                         status = a_status[0]
@@ -141,18 +145,31 @@ def change_order():
                                         if product[0] in orders[inp][0]:
                                             print(f"numer zamówienia {inp}, status {status} , data {orders[inp][1]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
                                             break
-                                    print("0 - anulowane\n1 - przyjęte\n2 - wysłane\n3 - dostarczone")
+                                    print("0 - anulowane\n1 - przyjęte\n2 - wysłane\n3 - dostarczone\nw - wyjść")
                                     if err==1:
                                         print("ERROR: Wprowadź cyfrę z przedziału 0 - 3.")
                                     try:
-                                        inp2=int(input("\nnowy status: "))
+                                        inp2=input("\nnowy status: ")
                                         os.system('cls' if os.name == 'nt' else 'clear')
-                                        if inp2 not in range(0, 4):
-                                            raise ValueError
+                                        if inp2 == "w":
+                                            pass
+                                        else:
+                                            inp2 = int(inp2)
+                                            if inp2 not in range(0, 4):
+                                                raise ValueError
                                     except ValueError:
                                         os.system('cls' if os.name == 'nt' else 'clear')
                                         err=1
                                     else:
+                                        if inp2=="w":
+                                            cont=0
+                                            break
+                                        i=0
+                                        for product in dt.products:
+                                            if product[0] in orders[inp][0]:
+                                                dt.products[i][7]+=orders[inp][0][product[0]]
+                                            i+=1
+                                        dt.write_products()
                                         dt.orders[inp][2]=inp2
                                         dt.write_orders()
                                         cont=0

@@ -43,9 +43,9 @@ def filter_orders(i,j,k,l):
             orders[order_id]=order
         elif order[2] == 3 and l:
             orders[order_id]=order
-    i=0
     a_status = ["anulowane","przyjęte","wysłane","dostarczone"]
     for order_id, order in orders.items():
+        i=0
         if order[2] == 0:
             status = a_status[0]
         elif order[2] == 1:
@@ -54,12 +54,14 @@ def filter_orders(i,j,k,l):
             status = a_status[2]
         else:
             status = a_status[3]
-            
-        for product in dt.products:
-            if product[0] in order[0]:
-                i+=1
-                print(f"numer zamówienia {order_id}, status {status}, data {order[1]}:\n    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
-                break
+        print(f"numer zamówienia {order_id}, status {status}, data {order[1]}:")
+        for product_id in order[0]:
+            for product in dt.products:
+                if product[0] == product_id:
+                    i+=1
+                    print(f"    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                    break
+        i+=1
     return orders
 
 def change_order():
@@ -115,7 +117,7 @@ def change_order():
                             inp=int(input("\nnumer zamówienia: "))
                             os.system('cls' if os.name == 'nt' else 'clear')
                             if inp==0:
-                                pass
+                                break
                             elif str(inp) not in orders.keys():
                                 raise ValueError
                         except ValueError:
@@ -131,19 +133,19 @@ def change_order():
                             else:
                                 inp=str(inp)
                                 while True:
-                                    a_status=["anulowane","przyjęte","wysłane","dostarczone"]
-                                    # if orders[inp][2] == 0:
-                                    #     status = a_status[0]
+                                    a_status=["przyjęte","wysłane","dostarczone"]
                                     if orders[inp][2] == 1:
                                         status = a_status[0]
                                     elif orders[inp][2] == 2:
-                                        status = a_status[0]
+                                        status = a_status[1]
                                     else:
-                                        status = a_status[0]
+                                        status = a_status[2]
                                     inp=str(inp)
+                                    i=0
                                     for product in dt.products:
                                         if product[0] in orders[inp][0]:
-                                            print(f"numer zamówienia {inp}, status {status} , data {orders[inp][1]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                            print(f"numer zamówienia {inp}, status {status} , data {orders[inp][1]}:\n    pozycja {i}, ilość {orders[inp][0][product[0]]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                            i+=1
                                             break
                                     print("0 - anulowane\n1 - przyjęte\n2 - wysłane\n3 - dostarczone\nw - wyjść")
                                     if err==1:

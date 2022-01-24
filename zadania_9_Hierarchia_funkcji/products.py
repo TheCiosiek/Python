@@ -133,8 +133,13 @@ def add_product():
     input("\n\nSUCCESS: Dodano produkt. Wprowadź enter by kontynuować...")
     os.system('cls' if os.name == 'nt' else 'clear')
 
+def print_products():
+    # for product in dt
+    pass
+
 def del_product():
-    #TODO
+    # if inp == "f":
+    #     products_filtered, filters = change_filters(products_filtered, filters)
     pass
 
 def change_product():

@@ -566,6 +566,7 @@ def add_order():
     order={}
     products_filtered=dt.products
     err=0
+    err2=0
     while True:
         i=0
         for product in products_filtered:
@@ -574,112 +575,115 @@ def add_order():
         print("Filtry:\n")
         print_filters(filters)
         if len(products_filtered):
-            print(f"f - zmiana filtrów\ns - sortuj przez cenę\nk - pokaż koszyk\nID - dodaj produkt do koszyka\n0 - wyjście")
-            if err == 1:
-                print("ERROR: Wpisano nieodpowiednią wartość.")
-                err=0
-            inp = input("\ninput: ")
-            os.system('cls' if os.name == 'nt' else 'clear')
-            if inp == "f":
-                products_filtered, filters = change_filters(products_filtered, filters)
-            elif inp == "s":
-                products_filtered = sort(products_filtered)
-            elif inp == "k":
-                while True:
-                    i=0
-                    if not order:
-                        print("Brak produktów w koszyku")
-                    cost=0
-                    for product in dt.products:
-                        if product[0] in order:
-                            i+=1
-                            cost+=order[product[0]]*product[6]
-                            print(f"pozycja {i}, ilość {order[product[0]]}, koszt {order[product[0]]*product[6]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
-                    print(f"razem: {cost}")
-                    print("\n1 - usuń pozycje\n2 - zrób zamówienie\n0 - wyjść")
-                    if err==1:
-                        print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
-                    try:
-                        inp=int(input("\ninput: "))
-                        os.system('cls' if os.name == 'nt' else 'clear')
-                        if inp not in range(0,3):
-                            raise ValueError 
-                    except ValueError:
-                        os.system('cls' if os.name == 'nt' else 'clear')
-                        err=1
-                    else:
-                        if inp == 0:
-                            break
-                        elif inp == 1:
-                            while inp!="0":
-                                if not order:
-                                    input("ERROR: Brak dostępnych pozycji do usunięcia. Wprowadź enter by kontynuować...")
+            err2=1
+        print(f"f - zmiana filtrów\ns - sortuj przez cenę\nk - pokaż koszyk\nID - dodaj produkt do koszyka\n0 - wyjście")
+        if err2 == 1:
+            print("ERROR: Brak dostępnych produktów dla wybranych filtrów.")
+        if err == 1:
+            print("ERROR: Wpisano nieodpowiednią wartość.")
+            err=0
+        inp = input("\ninput: ")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        if inp == "f":
+            products_filtered, filters = change_filters(products_filtered, filters)
+        elif inp == "s":
+            products_filtered = sort(products_filtered)
+        elif inp == "k":
+            while True:
+                i=0
+                if not order:
+                    print("Brak produktów w koszyku")
+                cost=0
+                for product in dt.products:
+                    if product[0] in order:
+                        i+=1
+                        cost+=order[product[0]]*product[6]
+                        print(f"pozycja {i}, ilość {order[product[0]]}, koszt {order[product[0]]*product[6]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                print(f"razem: {cost}")
+                print("\n1 - usuń pozycje\n2 - zrób zamówienie\n0 - wyjść")
+                if err==1:
+                    print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+                try:
+                    inp=int(input("\ninput: "))
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    if inp not in range(0,3):
+                        raise ValueError 
+                except ValueError:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    err=1
+                else:
+                    if inp == 0:
+                        break
+                    elif inp == 1:
+                        while inp!="0":
+                            if not order:
+                                input("ERROR: Brak dostępnych pozycji do usunięcia. Wprowadź enter by kontynuować...")
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                break
+                            else:
+                                while order:
+                                    i=0
+                                    for product in dt.products:
+                                        if product[0] in order:
+                                            i+=1
+                                            print(f"pozycja {i}, ilość {order[product[0]][0]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                    inp = input("\nWpisz 0 by wyjść. Pozycja do usunięcia: ")
                                     os.system('cls' if os.name == 'nt' else 'clear')
-                                    break
-                                else:
-                                    while order:
+                                    if inp=="0":
+                                        break
+                                    else:
                                         i=0
-                                        for product in dt.products:
+                                        for product in products_filtered:
                                             if product[0] in order:
                                                 i+=1
-                                                print(f"pozycja {i}, ilość {order[product[0]][0]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
-                                        inp = input("\nWpisz 0 by wyjść. Pozycja do usunięcia: ")
-                                        os.system('cls' if os.name == 'nt' else 'clear')
-                                        if inp=="0":
-                                            break
-                                        else:
-                                            i=0
-                                            for product in products_filtered:
-                                                if product[0] in order:
-                                                    i+=1
-                                                    if str(i)==inp:
-                                                        del order[product[0]]
+                                                if str(i)==inp:
+                                                    del order[product[0]]
 
-                        elif inp == 2:
-                            i=1
-                            for order_i in dt.orders:
-                                i+=1
-                            now = datetime.now()
-                            dt.orders[str(i)]=[order, now.strftime("%d/%m/%y, %H:%M:%S"), 1]
-                            i=0
-                            while i<len(dt.products):
-                                if dt.products[i][0] in order:
-                                    dt.products[i][7]-=order[dt.products[i][0]]
-                                i+=1
-                            dt.write_products()
-                            dt.write_orders()
-                            order={}
-                            print("SUCCES: Utworzono zamówienie.")
-                            break
-            elif inp == "0":
-                return
+                    elif inp == 2:
+                        i=1
+                        for order_i in dt.orders:
+                            i+=1
+                        now = datetime.now()
+                        dt.orders[str(i)]=[order, now.strftime("%d/%m/%y, %H:%M:%S"), 1]
+                        i=0
+                        while i<len(dt.products):
+                            if dt.products[i][0] in order:
+                                dt.products[i][7]-=order[dt.products[i][0]]
+                            i+=1
+                        dt.write_products()
+                        dt.write_orders()
+                        order={}
+                        print("SUCCES: Utworzono zamówienie.")
+                        break
+        elif inp == "0":
+            return
+        else:
+            getter = operator.itemgetter(0)
+            ids=map(getter, products_filtered)
+            if inp not in ids:
+                err = 1
             else:
-                getter = operator.itemgetter(0)
-                ids=map(getter, products_filtered)
-                if inp not in ids:
-                    err = 1
-                else:
-                    err=0
-                    while True:
-                        for product in products_filtered:
-                            if product[0]==inp:
-                                print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
-                                break
-                        print("ilość produktu:")
-                        if err==1:
-                            print(f"ERROR: Wprowadź liczbę z przedziału 0 - {product[7]} ")
-                        try:
-                            inp2=int(input("\ninput: "))
-                            os.system('cls' if os.name == 'nt' else 'clear')
-                            if inp2 == 0:
-                                break
-                            elif inp2 not in range(1,(product[7]+1)):
-                                os.system('cls' if os.name == 'nt' else 'clear')
-                                raise ValueError 
-                        except ValueError:
-                            err=1
-                        else:
-                            order[str(product[0])]=inp2
-                            input("SUCCESS: Dodano produkt do koszyka.")
-                            os.system('cls' if os.name == 'nt' else 'clear')
+                err=0
+                while True:
+                    for product in products_filtered:
+                        if product[0]==inp:
+                            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
                             break
+                    print("ilość produktu:")
+                    if err==1:
+                        print(f"ERROR: Wprowadź liczbę z przedziału 0 - {product[7]} ")
+                    try:
+                        inp2=int(input("\ninput: "))
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        if inp2 == 0:
+                            break
+                        elif inp2 not in range(1,(product[7]+1)):
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            raise ValueError 
+                    except ValueError:
+                        err=1
+                    else:
+                        order[str(product[0])]=inp2
+                        input("SUCCESS: Dodano produkt do koszyka.")
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        break

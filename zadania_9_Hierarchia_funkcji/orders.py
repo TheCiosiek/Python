@@ -574,11 +574,12 @@ def add_order():
             print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
         print("Filtry:\n")
         print_filters(filters)
-        if len(products_filtered):
+        if not len(products_filtered):
             err2=1
         print(f"f - zmiana filtrów\ns - sortuj przez cenę\nk - pokaż koszyk\nID - dodaj produkt do koszyka\n0 - wyjście")
         if err2 == 1:
             print("ERROR: Brak dostępnych produktów dla wybranych filtrów.")
+            err2 = 0
         if err == 1:
             print("ERROR: Wpisano nieodpowiednią wartość.")
             err=0

@@ -1,5 +1,6 @@
 import data as dt
 import os
+import orders
 
 def menu():
     dt.load_products()
@@ -12,9 +13,7 @@ def menu():
             #TODO
             pass
         elif option == 3:
-            #del_product()
-            #TODO
-            pass
+            del_product()
         elif option == 4:
             return
         elif option == 5:
@@ -133,14 +132,65 @@ def add_product():
     input("\n\nSUCCESS: Dodano produkt. Wprowadź enter by kontynuować...")
     os.system('cls' if os.name == 'nt' else 'clear')
 
-def print_products():
-    # for product in dt
-    pass
+def sort(products):
+    err=0
+    while True:
+        print("1 - malejąco\n2 - rosnąco\n0 - wyjście")
+        if err==1:
+                print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+        try:
+            option=int(input("\ninput: "))
+            os.system('cls' if os.name == 'nt' else 'clear')
+            if option not in range(0,3):
+                raise ValueError 
+        except ValueError:
+            err=1
+        else:
+            if option == 0:
+                return products
+            elif option == 1:
+                
+               return sorted(products, key=lambda product: int(product[0]), reverse=True)
+            elif option == 2:
+                return sorted(products, key=lambda product: (product[0]))
 
 def del_product():
-    # if inp == "f":
-    #     products_filtered, filters = change_filters(products_filtered, filters)
-    pass
+    filters=[[], [], [], [], [],[]]
+    products_filtered = dt.products
+    err=0
+    err2=0
+    while True:
+        ids=[]
+        for product in products_filtered:
+            ids.append(product[0])
+            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+        if not len(products_filtered):
+            err2=1
+        print(f"\nID - usuń produkt\nf - zmiana filtrów\ns - sortuj przez ID\n0 - wyjście")
+        if err2 == 1:
+            print("ERROR: Brak dostępnych produktów dla wybranych filtrów.")
+            err2 = 0
+        if err == 1:
+            print("ERROR: Wpisano nieodpowiednią wartość.")
+            err=0
+        inp = input("\ninput: ")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        if inp in ids:
+            i=0
+            for product in dt.products:
+                if product[0] == inp:
+                    del dt.products[i]
+                    dt.write_products
+                    return
+                i+=1
+        elif inp == "f":
+            products_filtered, filters = orders.change_filters(products_filtered, filters)
+        elif inp == "s":
+            products_filtered = sort(products_filtered)
+        elif inp == "0":
+            return
+        else:
+            err=1
 
 def change_product():
     #TODO

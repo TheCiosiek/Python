@@ -23,8 +23,32 @@ def menu():
             dt.auth = None, "user"
 
 def options():
-    #TODO
-    pass
+    err=0
+    while True:
+        if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
+            print("(1) Dodaj produkt\n(2) Historia zamówień\n(3) Zmień zamówienie\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
+            if err==1:
+                print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
+        else:
+            print("(1) Dodaj zamówienie\n(2) Historia zamówień\n(3) Zmień status\n(4) Wyloguj się\n(5) Wyjdź")
+            if err==1:
+                print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
+        try:
+            option=int(input("\ninput: "))
+            if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
+                if option not in range(1,7):
+                    raise ValueError
+            else:
+                if option not in range(1,6):
+                    raise
+                elif option >3:
+                    option+=1
+        except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            err=1
+        else: 
+            os.system('cls' if os.name == 'nt' else 'clear')
+            return option
 
 def add_product():
     #TODO

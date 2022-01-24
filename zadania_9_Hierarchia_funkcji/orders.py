@@ -8,7 +8,7 @@ def options():
     err=0
     while True:
         if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
-            print("(1) Dodaj zamówienie\n(2) Historia zamówień\n(3) Zmień zamówienie\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
+            print("(1) Dodaj zamówienie\n(2) Wyświetl zamówienia\n(3) Zmień zamówienie\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
         else:
@@ -182,9 +182,33 @@ def change_order():
 
 
 def orders_history():
-    filter_orders(1, 0, 0, 1)
-    input('Wprowadź enter by kontynuowac...')
-    os.system('cls' if os.name == 'nt' else 'clear')
+    while True:
+        filter_orders(filters[0],filters[1],filters[2],filters[3])
+        if err==1:
+            print("ERROR: Wprowadź cyfrę z przedziału 0 - 2. Wpisz 0 by wyjść.")
+        else:
+            print("Wyświetl zamówieniaL\n1 - bieżące\n2 - archiwalne.")
+        try:
+            inp=int(input("\ninput: "))
+            os.system('cls' if os.name == 'nt' else 'clear')
+            if inp==0:
+                break
+            elif str(inp) not in orders.keys():
+                raise ValueError
+        except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            err=1
+        else:
+            if inp == 0:
+                break
+            elif inp == 1:
+                filter_orders(0, 1, 1, 0)
+                input('Wprowadź enter by kontynuowac...')
+                os.system('cls' if os.name == 'nt' else 'clear')
+            else:
+                filter_orders(1, 0, 0, 1)
+                input('Wprowadź enter by kontynuowac...')
+                os.system('cls' if os.name == 'nt' else 'clear')
 
 def menu():
     dt.load_orders()

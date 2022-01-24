@@ -142,11 +142,13 @@ def change_order():
                                         status = a_status[2]
                                     inp=str(inp)
                                     i=0
-                                    for product in dt.products:
-                                        if product[0] in orders[inp][0]:
-                                            print(f"numer zamówienia {inp}, status {status} , data {orders[inp][1]}:\n    pozycja {i}, ilość {orders[inp][0][product[0]]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
-                                            i+=1
-                                            break
+                                    print(f"numer zamówienia {inp}, status {orders[inp][2]}, data {orders[inp][1]}:")
+                                    for product_id in orders[inp][0]:
+                                        for product in dt.products:
+                                            if product[0] == product_id:
+                                                print(f"    pozycja {i}, ilość {orders[inp][0][product[0]]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                                i+=1
+                                                break
                                     print("0 - anulowane\n1 - przyjęte\n2 - wysłane\n3 - dostarczone\nw - wyjść")
                                     if err==1:
                                         print("ERROR: Wprowadź cyfrę z przedziału 0 - 3.")

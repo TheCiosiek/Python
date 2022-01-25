@@ -142,8 +142,7 @@ def make_username(name,surname):
                         i+=1
                         cont=1
                         break
-            break
-                
+            break         
     if i>1:
         username+=("_"+str(i))
     return username
@@ -240,7 +239,6 @@ def add_username():
         if err==0:
             return username
 
-
 def add_password():
     while True:
         password_pass={"Sześć znaków":0,"Duże litery":0,"Małe litery":0,"Cyfry":0,"Znaki":0}
@@ -277,7 +275,6 @@ def add_password():
             os.system('cls' if os.name == 'nt' else 'clear')
             return password
         
-
 def change_user():
     err=0
     cont=1

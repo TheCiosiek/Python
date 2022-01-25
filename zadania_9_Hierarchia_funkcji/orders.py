@@ -467,8 +467,6 @@ def del_filters(filters):
                 return return_filters
         i+=1
 
-
-
 def change_filters(products, filters):
     products_filtered=[]
     err=0
@@ -515,7 +513,6 @@ def change_filters(products, filters):
                     j+=1
                 filters = new_filters
             products = filter_list(filters)
-
 
 def print_filters(filters):
     i=0

@@ -199,19 +199,14 @@ def change_order():
                                         break
 
 def orders_history():
+    err=0
     while True:
-        filter_orders(filters[0],filters[1],filters[2],filters[3])
+        print("Wyświetl zamówieniaL\n1 - bieżące\n2 - archiwalne\n0 - wyjść.\n")
         if err==1:
             print("ERROR: Wprowadź cyfrę z przedziału 0 - 2. Wpisz 0 by wyjść.")
-        else:
-            print("Wyświetl zamówieniaL\n1 - bieżące\n2 - archiwalne.")
         try:
             inp=int(input("\ninput: "))
             os.system('cls' if os.name == 'nt' else 'clear')
-            if inp==0:
-                break
-            elif str(inp) not in orders.keys():
-                raise ValueError
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
             err=1

@@ -9,9 +9,7 @@ def menu():
         if option == 1:
             add_product()
         elif option == 2:
-            #change_product()
-            #TODO
-            pass
+            change_product()
         elif option == 3:
             del_product()
         elif option == 4:
@@ -193,5 +191,135 @@ def del_product():
             err=1
 
 def change_product():
-    #TODO
-    pass
+    filters=[[], [], [], [], [],[]]
+    products_filtered = dt.products
+    err=0
+    err2=0
+    while True:
+        ids=[]
+        for product in products_filtered:
+            ids.append(product[0])
+            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+        if not len(products_filtered):
+            err2=1
+        else:
+            err2 = 0
+        print(f"\nID - zmień produkt\nf - zmiana filtrów\ns - sortuj przez ID\n0 - wyjście")
+        if err2 == 1:
+            print("ERROR: Brak dostępnych produktów dla wybranych filtrów.")
+        if err == 1:
+            print("ERROR: Wpisano nieodpowiednią wartość.")
+            err=0
+        inp = input("\ninput: ")
+        os.system('cls' if os.name == 'nt' else 'clear')
+        if inp in ids:
+            i=0
+            for product in dt.products:
+                if product[0] == inp:
+                    while True:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+                        print("Zmień:\n1 - producent\n2 - nazwa\n3 - ryzy\n4 - format\n5 - gramatura\n6 - cena\n7 - dostępność\n0 - wyjście\n")
+                        if err == 1:
+                            print("ERROR: Wprowadź cyfrę z zakresu 0 - 7")
+                            err=0
+                        inp = input("input: ")
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+                        if inp == "1":
+                            inp2 = input("nowy producent: ")
+                            dt.products[i][1]=inp2
+                        elif inp == "2":
+                            inp2 = input("nowa nazwa: ")
+                            dt.products[i][2]=inp2
+                        elif inp == "3":
+                            while True:
+                                if err==1:
+                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                    err = 0
+                                inp2 = input("nowa ilość ryz: ")
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                if is_numeric(inp2):
+                                    if float(inp2)>0:
+                                        dt.products[i][3]=str(inp2)
+                                        break
+                                err=1                                        
+                        elif inp == "4":
+                            while True:
+                                if err==1:
+                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                    err = 0
+                                try:
+                                    inp2 = int(input("nowy format(cyfrę): "))
+                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    if inp2<0:
+                                        raise ValueError
+                                except ValueError:
+                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    err=1
+                                else:
+                                    dt.products[i][4]=str(inp2)
+                                    break
+                        elif inp == "5":
+                            while True:
+                                if err==1:
+                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                    err = 0
+                                try:
+                                    inp2 = int(input("nowa gramatura(liczba): "))
+                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    if inp2<0:
+                                        raise ValueError
+                                except ValueError:
+                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    err=1
+                                else:
+                                    dt.products[i][5]=str(inp2)
+                                    break
+                        elif inp == "6":
+                            while True:
+                                if err==1:
+                                    print("ERROR: Wprowadź dodatnią liczbę.")
+                                    err = 0
+                                inp2 = input("nowa cena: ")
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                if is_numeric(inp2):
+                                    inp2=float(inp2)
+                                    if inp2>0:
+                                        dt.products[i][6]=round(inp2,2)
+                                        break
+                                err=1       
+                        elif inp == "7":
+                            while True:
+                                if err==1:
+                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                    err = 0
+                                try:
+                                    inp2 = int(input("nowa dostępność: "))
+                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    if inp2<0:
+                                        raise ValueError
+                                except ValueError:
+                                    os.system('cls' if os.name == 'nt' else 'clear')
+                                    err=1
+                                else:
+                                    dt.products[i][7]=inp2
+                                    break
+                        elif inp == "0":
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            break 
+                        else:
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            err=1
+                        dt.write_products()
+                    break
+                i+=1
+                    
+        elif inp == "f":
+            products_filtered, filters = orders.change_filters(products_filtered, filters)
+        elif inp == "s":
+            products_filtered = sort(products_filtered)
+        elif inp == "0":
+            return
+        else:
+            err=1

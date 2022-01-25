@@ -576,10 +576,11 @@ def add_order():
         print_filters(filters)
         if not len(products_filtered):
             err2=1
+        else: 
+            err2 = 0
         print(f"f - zmiana filtrów\ns - sortuj przez cenę\nk - pokaż koszyk\nID - dodaj produkt do koszyka\n0 - wyjście")
         if err2 == 1:
             print("ERROR: Brak dostępnych produktów dla wybranych filtrów.")
-            err2 = 0
         if err == 1:
             print("ERROR: Wpisano nieodpowiednią wartość.")
             err=0

@@ -3,7 +3,7 @@ import data as dt
 import operator
 from datetime import datetime
 import numpy as np
-import products
+import products as prod
 
 def menu():
     dt.load_orders()
@@ -475,7 +475,7 @@ def change_filters(products, filters):
         #wyświetlenie wyfiltrowanych produktów
         for product in products:
                 i+=1
-                products.print_product(product)
+                prod.print_product(product)
         print("Filtry:")
         print_filters(filters)
         print()
@@ -573,7 +573,7 @@ def add_order():
         i=0
         for product in products_filtered:
             i+=1
-            products.print_product(product)
+            prod.print_product(product)
         print("Filtry:\n")
         print_filters(filters)
         if not len(products_filtered):
@@ -671,7 +671,7 @@ def add_order():
                 while True:
                     for product in products_filtered:
                         if product[0]==inp:
-                            products.print_product(product)
+                            prod.print_product(product)
                             break
                     print("ilość produktu:")
                     if err==1:

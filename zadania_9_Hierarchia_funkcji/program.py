@@ -10,7 +10,7 @@ def options():
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         cnt=0
-        print_out=["Pracownicy - ","Zamówiena - ","Produkty - "]
+        print_out=["Pracownicy - ","Zamówienia - ","Produkty - "]
         for i in range (3):
             if dt.auth[1][4][i]:
                 print(f"{print_out[i]}{i-cnt+1}")

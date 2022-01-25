@@ -417,6 +417,7 @@ def add_filters(products, filters):
                 if option not in range (1, i-cnt+2):
                     raise ValueError()
             except ValueError:
+                os.system('cls' if os.name == 'nt' else 'clear')
                 err=1 
             else:
                 break
@@ -451,6 +452,7 @@ def del_filters(filters):
             if option not in range (1, i-cnt+2):
                 raise ValueError()
         except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
             err=1 
         else:
             break
@@ -488,6 +490,7 @@ def change_filters(products, filters):
             if option not in range(0,3):
                 raise ValueError 
         except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
             err=1
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -551,6 +554,7 @@ def sort(products):
             if option not in range(0,3):
                 raise ValueError 
         except ValueError:
+            os.system('cls' if os.name == 'nt' else 'clear')
             err=1
         else:
             if option == 0:

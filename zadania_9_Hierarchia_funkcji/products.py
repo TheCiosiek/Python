@@ -190,6 +190,9 @@ def del_product():
         else:
             err=1
 
+def print_product(product):
+    print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+
 def change_product():
     filters=[[], [], [], [], [],[]]
     products_filtered = dt.products
@@ -199,7 +202,7 @@ def change_product():
         ids=[]
         for product in products_filtered:
             ids.append(product[0])
-            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+            print_product(product)
         if not len(products_filtered):
             err2=1
         else:
@@ -218,7 +221,7 @@ def change_product():
                 if product[0] == inp:
                     while True:
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+                        print_product(product)
                         print("Zmień:\n1 - producent\n2 - nazwa\n3 - ryzy\n4 - format\n5 - gramatura\n6 - cena\n7 - dostępność\n0 - wyjście\n")
                         if err == 1:
                             print("ERROR: Wprowadź cyfrę z zakresu 0 - 7")
@@ -235,6 +238,8 @@ def change_product():
                         elif inp == "3":
                             while True:
                                 if err==1:
+                                    print_product(product)
+                                    print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 inp2 = input("nowa ilość ryz: ")
@@ -247,6 +252,8 @@ def change_product():
                         elif inp == "4":
                             while True:
                                 if err==1:
+                                    print_product(product)
+                                    print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 try:
@@ -263,6 +270,8 @@ def change_product():
                         elif inp == "5":
                             while True:
                                 if err==1:
+                                    print_product(product)
+                                    print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 try:
@@ -279,6 +288,8 @@ def change_product():
                         elif inp == "6":
                             while True:
                                 if err==1:
+                                    print_product(product)
+                                    print()
                                     print("ERROR: Wprowadź dodatnią liczbę.")
                                     err = 0
                                 inp2 = input("nowa cena: ")
@@ -292,6 +303,8 @@ def change_product():
                         elif inp == "7":
                             while True:
                                 if err==1:
+                                    print_product(product)
+                                    print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 try:

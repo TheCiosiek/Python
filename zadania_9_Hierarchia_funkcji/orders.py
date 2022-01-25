@@ -3,6 +3,7 @@ import data as dt
 import operator
 from datetime import datetime
 import numpy as np
+import products
 
 def menu():
     dt.load_orders()
@@ -474,7 +475,7 @@ def change_filters(products, filters):
         #wyświetlenie wyfiltrowanych produktów
         for product in products:
                 i+=1
-                print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+                products.print_product(product)
         print("Filtry:")
         print_filters(filters)
         print()
@@ -571,7 +572,7 @@ def add_order():
         i=0
         for product in products_filtered:
             i+=1
-            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+            products.print_product(product)
         print("Filtry:\n")
         print_filters(filters)
         if not len(products_filtered):
@@ -669,7 +670,7 @@ def add_order():
                 while True:
                     for product in products_filtered:
                         if product[0]==inp:
-                            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+                            products.print_product(product)
                             break
                     print("ilość produktu:")
                     if err==1:
@@ -683,6 +684,7 @@ def add_order():
                             os.system('cls' if os.name == 'nt' else 'clear')
                             raise ValueError 
                     except ValueError:
+                        os.system('cls' if os.name == 'nt' else 'clear')
                         err=1
                     else:
                         order[str(product[0])]=inp2

@@ -150,7 +150,7 @@ def sort(products):
                 
                return sorted(products, key=lambda product: int(product[0]), reverse=True)
             elif option == 2:
-                return sorted(products, key=lambda product: (product[0]))
+                return sorted(products, key=lambda product: int(product[0]))
 
 def del_product():
     filters=[[], [], [], [], [],[]]

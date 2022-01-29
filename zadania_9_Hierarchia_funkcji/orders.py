@@ -41,7 +41,7 @@ def options():
                     raise ValueError
             else:
                 if option not in range(1,6):
-                    raise
+                    raise ValueError
                 elif option >3:
                     option+=1
         except ValueError:

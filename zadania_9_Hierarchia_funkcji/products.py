@@ -124,7 +124,16 @@ def add_product():
                 j+=1
         else:
             i+=1
-            print(f"{print_items[i]}{product[i]}", end='')
+            if i==4:
+                print(f"format: A{product[i]}", end='')
+            elif i==5:
+                print(f"gramatura: {product[i]}", end='')
+            else:
+                print(f"{print_items[i]}{product[i]}", end='')
+            if i==5:
+                print("g/m",end="")
+            if i==6:
+                print("zł",end="")
             if i!=j:
                 print(", ",end="")
     dt.products.append(product)
@@ -214,7 +223,7 @@ def change_product():
         ids=[]
         for product in products_filtered:
             ids.append(product[0])
-            print_products(product)
+        print_products(products_filtered)
         if not len(products_filtered):
             err2=1
         else:

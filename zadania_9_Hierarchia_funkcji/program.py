@@ -41,7 +41,7 @@ def login():
     dt.load_users()
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
-        print("Wpisz 0, by wyjść.")
+        print("Wpisz 0 by wyjść.")
         login=input("Login: ")
         if login=="0":
             dt.auth = None, "access"
@@ -71,7 +71,7 @@ while True:
                 option=options()
                 if option == 0:
                     employees.menu()
-                if option == 1:
+                elif option == 1:
                     orders.menu()
                 else:
                     products.menu()

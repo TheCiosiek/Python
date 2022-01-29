@@ -208,7 +208,7 @@ def del_user():
             return
         i=0
         for user in dt.users:
-            if user[2] == del_user:
+            if user[2].lower() == del_user.lower():
                 del dt.users[i]
                 dt.write_users()
                 input("Usuwanie użytkownika poprawne. Wprowadź enter by kontynuować...")
@@ -219,24 +219,26 @@ def del_user():
 def add_username():
     err=0
     while True:
-        os.system('cls' if os.name == 'nt' else 'clear')
-        print("Login musi mieć przynajmniej 6 znaków. Wpisz 0, by wyjść.")
         if err==1:
-            print("ERROR: Login już istnieje.")
-        if err==2:
-            print("ERROR: Login ma mniej niż 6 znaków.")
+            print("ERROR: Login już istnieje. Wpisz 0 by wyjść.")
             err=0
+        elif err==2:
+            print("ERROR: Login ma mniej niż 6 znaków. Wpisz 0 by wyjść.")
+            err=0
+        else:
+            print("Login musi mieć przynajmniej 6 znaków. Wpisz 0 by wyjść.")
         username=input("\nWprowadź login: ")
-        if len(username)<6:
-            err=2
-            continue
+        
         if username=="0":
+            os.system('cls' if os.name == 'nt' else 'clear')
             return "0"
+        elif len(username)<6:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            err=2
         for user in dt.users:
-            if user[2]==username:
+            if user[2].lower()==username.lower():
                 os.system('cls' if os.name == 'nt' else 'clear')
-                err==1
-                break
+                err=1
         if err==0:
             return username
 
@@ -272,7 +274,7 @@ def add_password():
         if not all_ok:
             input(f"ERROR: Rejestracja niepoprawna. Wprowadź enter by kontynuować...")
         else: 
-            input(f"Rejestracja poprawna. Wprowadź enter by kontynuować...")
+            input(f"Hasło poprawne. Wprowadź enter by kontynuować...")
             os.system('cls' if os.name == 'nt' else 'clear')
             return password
         
@@ -351,9 +353,10 @@ def change_user():
             return
         dt.users[i][3]=password
         dt.write_users()
+        return
     elif option==5:
         dt.users[i][4]= acces_change()
         dt.write_users()
+        input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")
     os.system('cls' if os.name == 'nt' else 'clear')
-    input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")
 #Dziękuje za dokładne sprawdzenie programu!

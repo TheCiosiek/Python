@@ -1,5 +1,6 @@
 import json
 import os
+import pandas as pd
 
 def write_users():
     global users
@@ -42,3 +43,10 @@ def load_orders():
 global users, products, orders
 auth=False, "user"
 
+
+load_products()
+df = pd.DataFrame(data = products, columns=["ID","Producent","Nazwa","Ryzy","Format","Gramatura","Cena","Dostępność"])
+df['Format'] = 'A' + df['Format'].astype(str)
+df['Gramatura'] = df['Gramatura'].astype(str) + 'g/m'
+df['Cena'] = df['Cena'].astype(str) + 'zł'
+print(df.to_string(index=False))

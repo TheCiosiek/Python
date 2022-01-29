@@ -467,10 +467,7 @@ def change_filters(products, filters):
     err=0
     while True:
         i=0
-        #wyświetlenie wyfiltrowanych produktów
-        for product in products:
-                i+=1
-                prod.print_product(product)
+        prod.print_products(products)
         print("Filtry:")
         print_filters(filters)
         print()
@@ -566,9 +563,7 @@ def add_order():
     err2=0
     while True:
         i=0
-        for product in products_filtered:
-            i+=1
-            prod.print_product(product)
+        prod.print_products(products_filtered)
         print("Filtry:\n")
         print_filters(filters)
         if not len(products_filtered):
@@ -666,13 +661,13 @@ def add_order():
                 while True:
                     for product in products_filtered:
                         if product[0]==inp:
-                            prod.print_product(product)
+                            prod.print_products(product)
+                            print()
                             break
-                    print("ilość produktu:")
                     if err==1:
                         print(f"ERROR: Wprowadź liczbę z przedziału 0 - {product[7]} ")
                     try:
-                        inp2=int(input("\ninput: "))
+                        inp2=int(input("ilość produktu: "))
                         os.system('cls' if os.name == 'nt' else 'clear')
                         if inp2 == 0:
                             break

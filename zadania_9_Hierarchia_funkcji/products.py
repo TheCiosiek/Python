@@ -1,6 +1,8 @@
 import data as dt
 import os
 import orders
+import pandas as pd
+import numpy as np
 
 def menu():
     dt.load_products()
@@ -190,8 +192,16 @@ def del_product():
         else:
             err=1
 
-def print_product(product):
-    print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+def print_products(products):
+    if np.size(products)!=8:
+        df = pd.DataFrame(data = products, columns=["ID","Producent","Nazwa","Ryzy","Format","Gramatura","Cena","Dostępność"])
+    else:
+        df = pd.DataFrame([products], columns=["ID","Producent","Nazwa","Ryzy","Format","Gramatura","Cena","Dostępność"])
+    df['Format'] = 'A' + df['Format'].astype(str)
+    df['Gramatura'] = df['Gramatura'].astype(str) + 'g/m'
+    df['Cena'] = df['Cena'].astype(str) + 'zł'
+    print(df.to_string(index=False))
+
 
 def change_product():
     filters=[[], [], [], [], [],[]]
@@ -202,7 +212,7 @@ def change_product():
         ids=[]
         for product in products_filtered:
             ids.append(product[0])
-            print_product(product)
+            print_products(product)
         if not len(products_filtered):
             err2=1
         else:
@@ -221,7 +231,7 @@ def change_product():
                 if product[0] == inp:
                     while True:
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print_product(product)
+                        print_products(product)
                         print("Zmień:\n1 - producent\n2 - nazwa\n3 - ryzy\n4 - format\n5 - gramatura\n6 - cena\n7 - dostępność\n0 - wyjście\n")
                         if err == 1:
                             print("ERROR: Wprowadź cyfrę z zakresu 0 - 7")
@@ -238,7 +248,7 @@ def change_product():
                         elif inp == "3":
                             while True:
                                 if err==1:
-                                    print_product(product)
+                                    print_products(product)
                                     print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
@@ -252,7 +262,7 @@ def change_product():
                         elif inp == "4":
                             while True:
                                 if err==1:
-                                    print_product(product)
+                                    print_products(product)
                                     print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
@@ -270,7 +280,7 @@ def change_product():
                         elif inp == "5":
                             while True:
                                 if err==1:
-                                    print_product(product)
+                                    print_products(product)
                                     print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
@@ -288,7 +298,7 @@ def change_product():
                         elif inp == "6":
                             while True:
                                 if err==1:
-                                    print_product(product)
+                                    print_products(product)
                                     print()
                                     print("ERROR: Wprowadź dodatnią liczbę.")
                                     err = 0
@@ -303,7 +313,7 @@ def change_product():
                         elif inp == "7":
                             while True:
                                 if err==1:
-                                    print_product(product)
+                                    print_products(product)
                                     print()
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0

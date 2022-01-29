@@ -2,6 +2,7 @@ import random
 import os
 import data as dt
 import unicodedata
+import pandas as pd
 
 def menu():
     while dt.auth[0]==True:
@@ -196,8 +197,8 @@ def del_user():
     del_user=""
     while del_user!="0":
         os.system('cls' if os.name == 'nt' else 'clear')
-        for user in dt.users:
-            print(f"imię: {user[0]}, nazwisko: {user[1]}, nazwa: {user[2]}")
+        df = pd.DataFrame(data = dt.users, columns=["Imię","Nazwisko","Nazwa","Hasło", "Dostęp"]).loc[:, ["Imię", "Nazwisko", "Nazwa"]]
+        print(df.to_string(index=False))
         if err==1:
             print("ERROR: Nie znaleziono użytkownika. Wpisz 0, by wyjść.")
         else:
@@ -275,13 +276,17 @@ def add_password():
             os.system('cls' if os.name == 'nt' else 'clear')
             return password
         
+def print_users():
+    df = pd.DataFrame(data = dt.users, columns=["Imię","Nazwisko","Nazwa","Hasło", "Dostęp"])
+    print(df.to_string(index=False))
+
 def change_user():
     err=0
     cont=1
     #Wysukiwanie użytkownika
     while cont:
-        for user in dt.users:
-            print(f"imię: {user[0]}, nazwisko: {user[1]}, nazwa: {user[2]}, hasło: {user[3]}, dostęp: {user[4]}")
+        df = pd.DataFrame(data = dt.users, columns=["Imię","Nazwisko","Nazwa","Hasło", "Dostęp"])
+        print(df.to_string(index=False))
         if err==0:
             print("Wpisz 0, by wyjść.")
         else:

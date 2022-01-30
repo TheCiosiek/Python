@@ -207,7 +207,7 @@ def print_products(products):
     elif np.size(products)!=8:
         df = pd.DataFrame(data = products, columns=["ID","Producent","Nazwa","Ryzy","Format","Gramatura","Cena","Dostępność"])
     else:
-        df = pd.DataFrame([products], columns=["ID","Producent","Nazwa","Ryzy","Format","Gramatura","Cena","Dostępność"])
+        df = pd.DataFrame(data = [products[0]], columns=["ID","Producent","Nazwa","Ryzy","Format","Gramatura","Cena","Dostępność"])
         df['Format'] = 'A' + df['Format'].astype(str)
         df['Gramatura'] = df['Gramatura'].astype(str) + 'g/m'
         df['Cena'] = df['Cena'].astype(str) + 'zł'

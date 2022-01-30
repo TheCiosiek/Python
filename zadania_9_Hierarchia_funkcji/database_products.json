@@ -1,8 +1,8 @@
 [
   [
     "1",
-    "emerson",
-    "office paper",
+    "Emerson",
+    "Office paper",
     "1",
     "4",
     "80",
@@ -11,8 +11,8 @@
   ],
   [
     "2",
-    "int. paper",
-    "pollux",
+    "Int. paper",
+    "Pollux",
     "1",
     "4",
     "80",
@@ -21,8 +21,8 @@
   ],
   [
     "3",
-    "int. paper",
-    "polspeed",
+    "Int. paper",
+    "Polspeed",
     "1",
     "4",
     "80",
@@ -31,8 +31,8 @@
   ],
   [
     "4",
-    "int. paper",
-    "pollux",
+    "Int. paper",
+    "Pollux",
     "1",
     "4",
     "80",
@@ -41,8 +41,8 @@
   ],
   [
     "5",
-    "int. paper",
-    "polspeed",
+    "Int. paper",
+    "Polspeed",
     "5",
     "4",
     "105",
@@ -51,8 +51,8 @@
   ],
   [
     "6",
-    "int. paper",
-    "poljet",
+    "Int. paper",
+    "Poljet",
     "1",
     "3",
     "80",
@@ -61,8 +61,8 @@
   ],
   [
     "7",
-    "int. paper",
-    "poljet",
+    "Int. paper",
+    "Poljet",
     "1",
     "4",
     "80",
@@ -71,8 +71,8 @@
   ],
   [
     "8",
-    "int. paper",
-    "pollux",
+    "Int. paper",
+    "Pollux",
     "1",
     "3",
     "80",
@@ -81,8 +81,8 @@
   ],
   [
     "9",
-    "int. paper",
-    "polspeed",
+    "Int. paper",
+    "Polspeed",
     "1",
     "3",
     "80",
@@ -91,8 +91,8 @@
   ],
   [
     "10",
-    "int. paper",
-    "poleffect",
+    "Int. paper",
+    "Poleffect",
     "0.5",
     "4",
     "160",
@@ -101,8 +101,8 @@
   ],
   [
     "11",
-    "int. paper",
-    "poleffect",
+    "Int. paper",
+    "Poleffect",
     "0.5",
     "4",
     "200",
@@ -111,8 +111,8 @@
   ],
   [
     "12",
-    "int. paper",
-    "poleffect",
+    "Int. paper",
+    "Poleffect",
     "0.5",
     "4",
     "80",
@@ -121,12 +121,12 @@
   ],
   [
     "13",
-    "lidl",
-    "delux",
-    "5",
+    "Lidl",
+    "Delux",
+    "0.5",
     "4",
     "80",
     15.0,
-    5
+    100
   ]
 ]

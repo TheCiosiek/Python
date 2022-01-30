@@ -359,4 +359,3 @@ def change_user():
         dt.write_users()
         input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")
     os.system('cls' if os.name == 'nt' else 'clear')
-#Dziękuje za dokładne sprawdzenie programu!

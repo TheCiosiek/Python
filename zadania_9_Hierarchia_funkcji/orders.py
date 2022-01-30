@@ -497,6 +497,8 @@ def del_filters(filters):
         if filters[i]:
             cnt+=1
             if cnt==option:
+                if i==5:
+                    return [[],[],[],[],[],filters[i]]
                 return_filters = change_filter(i, filters)
                 return return_filters
         i+=1
@@ -547,28 +549,34 @@ def change_filters(products, filters):
 
 def print_filters(filters):
     i=0
+    cnt=0
     for filter in filters:
         if filter == []:
             pass
-        elif i==0:
-            print("producent: ",end='')
-            print(", ".join(filter))
-        elif i==1:
-            print("nazwa: ",end='')
-            print(", ".join(filter))
-        elif i==2:
-            print("ryzy: ",end='')
-            print(", ".join(filter))
-        elif i==3:
-            print("format: ",end='A')
-            print(", A".join(filter))
-        elif i==4:
-            print("gramatura: ",end='')
-            print("g/m, ".join(filter),end='g/m\n')
-        elif i==5:
-            print("cena: ",end='')
-            print(" - ".join(filter))
+        else:
+            cnt+=1
+            if i==0:
+                print("producent: ",end='')
+                print(", ".join(filter))
+            elif i==1:
+                print("nazwa: ",end='')
+                print(", ".join(filter))
+            elif i==2:
+                print("ryzy: ",end='')
+                print(", ".join(filter))
+            elif i==3:
+                print("format: ",end='A')
+                print(", A".join(filter))
+            elif i==4:
+                print("gramatura: ",end='')
+                print("g/m, ".join(filter),end='g/m\n')
+            elif i==5:
+                print("cena: ",end='')
+                print(" - ".join(filter))
         i+=1
+    if cnt==0:
+        print("Nie wybrano.")
+
 
 def sort(products):
     err=0
@@ -701,15 +709,15 @@ def add_order():
                 while True:
                     for product in products_filtered:
                         if product[0]==inp:
-                            prod.print_products(product)
+                            prod.print_products([product])
                             print()
                             break
                     if err==1:
                         print(f"ERROR: Wprowadź liczbę z przedziału 0 - {product[7]} ")
                     try:
                         inp2=int(input("ilość produktu: "))
-                        os.system('cls' if os.name == 'nt' else 'clear')
                         if inp2 == 0:
+                            os.system('cls' if os.name == 'nt' else 'clear')
                             break
                         elif inp2 not in range(1,(product[7]+1)):
                             os.system('cls' if os.name == 'nt' else 'clear')

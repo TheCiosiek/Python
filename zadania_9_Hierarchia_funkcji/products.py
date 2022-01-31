@@ -28,6 +28,7 @@ def options():
             print("(1) Dodaj produkt\n(2) Zmień produkt\n(3) Usuń produkt\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
+                err=0
         else:
             print("(1) Dodaj produkt\n(2) Zmień produkt\n(3) Usuń produkt\n(4) Wyloguj się\n(5) Wyjdź")
             if err==1:
@@ -242,14 +243,15 @@ def change_product():
                 if product[0] == inp:
                     while True:
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print_products(product)
+                        print_products([product])
+                        print()
                         print("Zmień:\n1 - producent\n2 - nazwa\n3 - ryzy\n4 - format\n5 - gramatura\n6 - cena\n7 - dostępność\n0 - wyjście\n")
                         if err == 1:
                             print("ERROR: Wprowadź cyfrę z zakresu 0 - 7")
                             err=0
                         inp = input("input: ")
                         os.system('cls' if os.name == 'nt' else 'clear')
-                        print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+                        print_products([product])
                         if inp == "1":
                             inp2 = input("nowy producent: ")
                             dt.products[i][1]=inp2
@@ -259,11 +261,10 @@ def change_product():
                         elif inp == "3":
                             while True:
                                 if err==1:
-                                    print_products(product)
-                                    print()
+                                    print_products([product])
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
-                                inp2 = input("nowa ilość ryz: ")
+                                inp2 = input("\nnowa ilość ryz: ")
                                 os.system('cls' if os.name == 'nt' else 'clear')
                                 if is_numeric(inp2):
                                     if float(inp2)>0:
@@ -273,12 +274,11 @@ def change_product():
                         elif inp == "4":
                             while True:
                                 if err==1:
-                                    print_products(product)
-                                    print()
+                                    print_products([product])
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 try:
-                                    inp2 = int(input("nowy format(cyfrę): "))
+                                    inp2 = int(input("\nnowy format(cyfrę): "))
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     if inp2<0:
                                         raise ValueError
@@ -291,12 +291,11 @@ def change_product():
                         elif inp == "5":
                             while True:
                                 if err==1:
-                                    print_products(product)
-                                    print()
+                                    print_products([product])
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 try:
-                                    inp2 = int(input("nowa gramatura(liczba): "))
+                                    inp2 = int(input("\nnowa gramatura(liczba): "))
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     if inp2<0:
                                         raise ValueError
@@ -309,11 +308,10 @@ def change_product():
                         elif inp == "6":
                             while True:
                                 if err==1:
-                                    print_products(product)
-                                    print()
+                                    print_products([product])
                                     print("ERROR: Wprowadź dodatnią liczbę.")
                                     err = 0
-                                inp2 = input("nowa cena: ")
+                                inp2 = input("\nnowa cena: ")
                                 os.system('cls' if os.name == 'nt' else 'clear')
                                 if is_numeric(inp2):
                                     inp2=float(inp2)
@@ -324,12 +322,11 @@ def change_product():
                         elif inp == "7":
                             while True:
                                 if err==1:
-                                    print_products(product)
-                                    print()
+                                    print_products([product])
                                     print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
                                     err = 0
                                 try:
-                                    inp2 = int(input("nowa dostępność: "))
+                                    inp2 = int(input("\nnowa dostępność: "))
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     if inp2<0:
                                         raise ValueError

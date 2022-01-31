@@ -201,7 +201,7 @@ def change_order():
 def orders_history():
     err=0
     while True:
-        print("Wyświetl zamówieniaL\n1 - bieżące\n2 - archiwalne\n0 - wyjść.\n")
+        print("Wyświetl zamówieniaL\n1 - bieżące\n2 - archiwalne\n0 - wyjść.")
         if err==1:
             print("ERROR: Wprowadź cyfrę z przedziału 0 - 2. Wpisz 0 by wyjść.")
         try:
@@ -253,7 +253,7 @@ def filter_list(filters):
                         products_filtered.append(product)
             elif i==6:
                 for product in products:
-                    if product[6]>=int(filter[0]) and product[6]<=int(filter[1]):
+                    if product[6]>=float(filter[0]) and product[6]<=float(filter[1]):
                         products_filtered.append(product)
             products = products_filtered
         i+=1
@@ -303,7 +303,7 @@ def change_filter(i, available_products):
                     print("ERROR: Brak producenta w wybranych filtrach.")
                 else:
                     add_filters.append(inp)
-                    print("SUCCESS")
+                    print("SUCCESS: Zmieniono filtr.")
         elif i==1:
             while True:
                 s=", "
@@ -322,7 +322,7 @@ def change_filter(i, available_products):
                     print("ERROR: Brak nazwy w dostępnych filtrach.")
                 else:
                     add_filters.append(inp.lower())
-                    print("SUCCESS")
+                    print("SUCCESS: Zmieniono filtr.")
         elif i==2:
             s=", "
             while True:
@@ -341,7 +341,7 @@ def change_filter(i, available_products):
                     print("ERROR: Brak ryzy w dostępnych filtrach.")
                 else:
                     add_filters.append(inp)
-                    print("SUCCESS")
+                    print("SUCCESS: Zmieniono filtr.")
         elif i==3:
             s=", A"
             while True:
@@ -359,7 +359,7 @@ def change_filter(i, available_products):
                 elif inp.lower() not in available_products[3].lower():
                     print("ERROR: Brak formatu w dostępnych filtrach.")
                 else:
-                    print("SUCCESS")
+                    print("SUCCESS: Zmieniono filtr.")
                     add_filters.append(inp)
         elif i==4:
             s="g/m, "
@@ -378,36 +378,28 @@ def change_filter(i, available_products):
                 elif inp not in available_products[4]:
                     print("ERROR: Brak gramatury w dostępnych filtrach.")
                 else:
-                    print("SUCCESS")
+                    print("SUCCESS: Zmieniono filtr.")
                     add_filters.append(inp)
         elif i==5:
             err=0
             err2=0
             s="zł do "
             while True:
-                try:
-                    print(f"Dostępne filtry(cena): {s.join(available_products[i])}",end = "zł\n")
-                except TypeError:
-                    pass
                 if err==1:
-                    print("ERROR: Wprowadź liczbę.")
+                    print("ERROR: Wprowadź liczbę.\n")
                     err=0
                 try:
-                    inp = int(input("\nPodaj cenę: od "))
+                    inp = float(input("Podaj cenę: od "))
                     os.system('cls' if os.name == 'nt' else 'clear')
                     while True:
                         try:
-                            print(f"Dostępne filtry(cena): {s.join(available_products[i])}",end = "zł\n")
-                        except TypeError:
-                            pass
-                        try:
                             if err2==1:
-                                print("ERROR: Wprowadź drugą wartość wiekszą od poprzedniej.")
+                                print("ERROR: Wprowadź drugą wartość wiekszą od poprzedniej.\n")
                                 err2=0
                             elif err==1:
-                                print("ERROR: Wprowadź liczbę.")
+                                print("ERROR: Wprowadź liczbę.\n")
                                 err=0
-                            inp2 = int(input(f"\nPodaj cenę: od {inp} do "))
+                            inp2 = float(input(f"Podaj cenę: od {inp} do "))
                             os.system('cls' if os.name == 'nt' else 'clear')
                             if inp>inp2:
                                 err2=1
@@ -445,6 +437,7 @@ def add_filters(products, filters):
                     cnt+=1
             if err==1:
                 print(f"ERROR: Wprowadź cyfrę z przedziału {1} - {6-cnt}")
+                err=0
             try:
                 option = int(input("\ninput: "))
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -515,6 +508,7 @@ def change_filters(products, filters):
         print("1 - dodaj filtr\n2 - usuń filtr\n0 - wyjdź")
         if err==1:
             print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+            err=0
         try:
             option=int(input("\ninput: "))
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -645,6 +639,7 @@ def add_order():
                 print("\n1 - usuń pozycje\n2 - zrób zamówienie\n0 - wyjść")
                 if err==1:
                     print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
+                    err=0
                 try:
                     inp=int(input("\ninput: "))
                     os.system('cls' if os.name == 'nt' else 'clear')
@@ -682,21 +677,24 @@ def add_order():
                                                     del order[product[0]]
 
                     elif inp == 2:
-                        i=1
-                        for order_i in dt.orders:
-                            i+=1
-                        now = datetime.now()
-                        dt.orders[str(i)]=[order, now.strftime("%d/%m/%y, %H:%M:%S"), 1]
-                        i=0
-                        while i<len(dt.products):
-                            if dt.products[i][0] in order:
-                                dt.products[i][7]-=order[dt.products[i][0]]
-                            i+=1
-                        dt.write_products()
-                        dt.write_orders()
-                        order={}
-                        print("SUCCES: Utworzono zamówienie.")
-                        break
+                        if order:
+                            i=1
+                            for order_i in dt.orders:
+                                i+=1
+                            now = datetime.now()
+                            dt.orders[str(i)]=[order, now.strftime("%d/%m/%y, %H:%M:%S"), 1]
+                            i=0
+                            while i<len(dt.products):
+                                if dt.products[i][0] in order:
+                                    dt.products[i][7]-=order[dt.products[i][0]]
+                                i+=1
+                            dt.write_products()
+                            dt.write_orders()
+                            order={}
+                            input("SUCCES: Utworzono zamówienie. Wprowadź enter by kontynuować.")
+                            break
+                        else:
+                            input("ERROR: Brak produktów w koszyku. Wprowadź enter by kontynuować...")
         elif inp == "0":
             return
         else:
@@ -710,10 +708,11 @@ def add_order():
                     for product in products_filtered:
                         if product[0]==inp:
                             prod.print_products([product])
-                            print()
                             break
                     if err==1:
                         print(f"ERROR: Wprowadź liczbę z przedziału 0 - {product[7]} ")
+                        err=0
+                    print()
                     try:
                         inp2=int(input("ilość produktu: "))
                         if inp2 == 0:

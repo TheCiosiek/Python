@@ -78,7 +78,7 @@ def filter_orders(i,j,k,l):
             for product in dt.products:
                 if product[0] == product_id:
                     i+=1
-                    print(f"    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                    print(f"    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                     break
         i+=1
     return orders
@@ -165,7 +165,7 @@ def change_order():
                                     for product_id in orders[inp][0]:
                                         for product in dt.products:
                                             if product[0] == product_id:
-                                                print(f"    pozycja {i}, ilość {orders[inp][0][product[0]]}:\n        producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                                print(f"    pozycja {i}, ilość {orders[inp][0][product[0]]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                                                 i+=1
                                                 break
                                     print("0 - anulowane\n1 - przyjęte\n2 - wysłane\n3 - dostarczone\nw - wyjść")
@@ -634,7 +634,7 @@ def add_order():
                     if product[0] in order:
                         i+=1
                         cost+=order[product[0]]*product[6]
-                        print(f"pozycja {i}, ilość {order[product[0]]}, koszt {order[product[0]]*product[6]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                        print(f"pozycja {i}, ilość {order[product[0]]}, koszt {order[product[0]]*product[6]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                 print(f"razem: {cost}")
                 print("\n1 - usuń pozycje\n2 - zrób zamówienie\n0 - wyjść")
                 if err==1:
@@ -663,7 +663,7 @@ def add_order():
                                     for product in dt.products:
                                         if product[0] in order:
                                             i+=1
-                                            print(f"pozycja {i}, ilość {order[product[0]][0]}:\n    producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł")
+                                            print(f"pozycja {i}, ilość {order[product[0]][0]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                                     inp = input("\nWpisz 0 by wyjść. Pozycja do usunięcia: ")
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     if inp=="0":
@@ -682,7 +682,7 @@ def add_order():
                             for order_i in dt.orders:
                                 i+=1
                             now = datetime.now()
-                            dt.orders[str(i)]=[order, now.strftime("%d/%m/%y, %H:%M:%S"), 1]
+                            dt.orders[str(i)]=[order, now.strftime("%d/%m/%y %H:%M:%S"), 1]
                             i=0
                             while i<len(dt.products):
                                 if dt.products[i][0] in order:

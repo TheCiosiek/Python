@@ -1,5 +1,5 @@
 import unittest
-from python_sql import check_date
+from zadanie_10 import check_date
 
 class Tests(unittest.TestCase):
     def testCheckDate(self):

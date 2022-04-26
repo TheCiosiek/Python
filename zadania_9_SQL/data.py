@@ -16,17 +16,17 @@ import pandas as pd
 #     with open(data_file_path, "r") as file:
 #         users = json.load(file)
 
-def write_products():
-    global products
-    data_file_path =  os.path.join(os.path.dirname(__file__), "database_products.json")
-    with open(data_file_path, "w") as file:
-        json.dump(products, file, indent=2) 
+# def write_products():
+#     global products
+#     data_file_path =  os.path.join(os.path.dirname(__file__), "database_products.json")
+#     with open(data_file_path, "w") as file:
+#         json.dump(products, file, indent=2) 
 
-def load_products():
-    global products
-    data_file_path = os.path.join(os.path.dirname(__file__), "database_products.json")
-    with open(data_file_path, "r") as file:
-        products = json.load(file)
+# def load_products():
+#     global products
+#     data_file_path = os.path.join(os.path.dirname(__file__), "database_products.json")
+#     with open(data_file_path, "r") as file:
+#         products = json.load(file)
 
 def write_orders():
     global orders

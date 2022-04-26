@@ -152,7 +152,7 @@ def make_username(name, surname, users):
 def add_name():
     print("Wpisz 0, by wyjść")
     while True:
-        name = input("Wprowadź imię: ")
+        name = input("\nWprowadź imię: ")
         if name=="0":
             return "0"
         if name.isalpha():
@@ -165,7 +165,7 @@ def add_name():
 def add_surname():
     print("Wpisz 0, by wyjść")
     while True:
-        surname = input("Wprowadź nazwisko: ")
+        surname = input("\nWprowadź nazwisko: ")
         if surname=="0":
             return "0"
         if surname.isalpha():
@@ -336,23 +336,26 @@ def change_user():
         else:
             print("ERROR: Nie znaleziono użytkownika. Wpisz 0, by wyjść.")
         change_user = input("Nazwa użytkownika do zmiany: ")
+        os.system('cls' if os.name == 'nt' else 'clear')
+
         if change_user == "0":
             return
-        i=0
-        os.system('cls' if os.name == 'nt' else 'clear')
         
+        #szukanie użytkownika
+        i=0
         while i<len(users):
             if users[i][2].lower() == change_user.lower():
-                cont=0
+                cont = 0
+                user = df.iloc[i]
                 break
             i+=1
         err=1
     #Zmiana użytkownika
     err=0
     while True:
+        os.system('cls' if os.name == 'nt' else 'clear')
         username = users[i][2]
-        print(df.iloc[0].to_string())
-
+        print(user.to_string())
         # print(f"imię: {users[i][0]}, nazwisko: {users[i][1]}, nazwa: {users[i][2]}, hasło: {users[i][3]}, dostęp: {users[i][4]}")
         print("\n1 - imię\n2 - nazwisko\n3 - nazwa użytkownika\n4 - hasło\n5 - dostęp ")
         if err==1:
@@ -367,49 +370,59 @@ def change_user():
             err=1
             os.system('cls' if os.name == 'nt' else 'clear')
         else:
+
+            if option==0:
+                break
             os.system('cls' if os.name == 'nt' else 'clear')
 
-        if option==0:
-            return
+            if option==1:
+                name = add_name()
+                if name == "0":
+                    continue
+                conn.execute('UPDATE users SET name = ? WHERE username = ?', (name, username))
+                user[0] = name
+                os.system('cls' if os.name == 'nt' else 'clear')
 
-        elif option==1:
-            name = add_name()
-            if name == "0":
-                continue
-            conn.execute('UPDATE users SET name = ? WHERE username = ?', (name, username))
-            if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
-                new_username = make_username(name, users[i][1], users)
+                if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
+                    new_username = make_username(name, users[i][1], users)
+                    conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
+                    conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
+                    user[2] = new_username
+
+            elif option==2:
+                surname = add_surname()
+                if surname == "0":
+                    continue
+                conn.execute('UPDATE users SET surname = ? WHERE username = ?', (surname, username))
+                user[1] = surname
+                os.system('cls' if os.name == 'nt' else 'clear')
+
+                if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
+                    new_username = make_username(name, users[i][1], users)
+                    conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
+                    conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
+                    user[2] = new_username
+
+            elif option==3:
+                new_username = add_username(users)
+                if new_username == "0":
+                    continue
                 conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
                 conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
-
-        elif option==2:
-            surname = add_surname()
-            if surname == "0":
+                user[2] = new_username
                 continue
-            conn.execute('UPDATE users SET surname = ? WHERE username = ?', (surname, username))
-            if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
-                new_username = make_username(name, users[i][1], users)
-                conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
-                conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
-            
-        elif option==3:
-            new_username = add_username(users)
-            if new_username == "0":
-                continue
-            conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
-            conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
-            break
 
-        elif option==4:
-            password = add_password()
-            if password == "0":
-                continue
-            conn.execute('UPDATE users SET password = ? WHERE username = ?', (password, username))
+            elif option==4:
+                password = add_password()
+                if password == "0":
+                    continue
+                conn.execute('UPDATE users SET password = ? WHERE username = ?', (password, username))
+                user[3] = new_username
 
-        elif option==5:
-            new_access = acces_change()
-            conn.execute('UPDATE users_access SET users = ?, products = ?, orders = ? WHERE username = ?', (access[0], access[1], access[2], username))
-
+            elif option==5:
+                new_access = acces_change()
+                conn.execute('UPDATE users_access SET users = ?, products = ?, orders = ? WHERE username = ?', (new_access[0], new_access[1], new_access[2], username))
+                user[4], user[5], user[6] = new_access[0], new_access[1], new_access[2]
     conn.commit()
     conn.close()
     input("Zmiana użytkownika poprawna. Wprowadź enter by kontynuować...")

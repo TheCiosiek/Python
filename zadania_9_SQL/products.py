@@ -6,7 +6,6 @@ import numpy as np
 import sqlite3
 
 def menu():
-    dt.load_products()
     while dt.auth[0]==True:
         option = options()
         if option == 1:
@@ -194,24 +193,11 @@ def del_product():
             err2 = 0
         if err == 1:
             print("ERROR: Wpisano nieodpowiednią wartość.")
-            err=0
+            err = 0
         inp = input("\ninput: ")
         try:
             for product in products_filtered:
                 if str(product[0]) == inp:
-                    conn.execute('DELETE FROM products WHERE id = ?', (str(product[0]),))
-                    conn.commit()
-                    conn.close()
-
-                    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
-                    conn = sqlite3.connect(DATA_PATH)
-                    curs = conn.cursor()
-
-                    products = curs.execute('SELECT * from products').fetchall()
-
-                    products_filtered = orders.filter_list(filters, products)
-                    input("SUCCESS: Poprawnie usunięto produkt. Naciśnij enter by kontynuować...")
-                    os.system('cls' if os.name == 'nt' else 'clear')
                     raise ValueError
 
             os.system('cls' if os.name == 'nt' else 'clear')   
@@ -222,11 +208,24 @@ def del_product():
                 products_filtered = sort(products_filtered)
             
             elif inp == "0":
+                conn.close()
                 return
             else:
                 err=1
         except ValueError:
-            pass
+            conn.execute('DELETE FROM products WHERE id = ?', (str(product[0]),))
+            conn.commit()
+            conn.close()
+
+            DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+            conn = sqlite3.connect(DATA_PATH)
+            curs = conn.cursor()
+
+            products = curs.execute('SELECT * from products').fetchall()
+
+            products_filtered = orders.filter_list(filters, products)
+            input("SUCCESS: Poprawnie usunięto produkt. Naciśnij enter by kontynuować...")
+            os.system('cls' if os.name == 'nt' else 'clear')
 
 def print_products(products):
     if np.size(products)==0:
@@ -242,14 +241,15 @@ def print_products(products):
 
 
 def change_product():
+    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+    conn = sqlite3.connect(DATA_PATH)
+    curs = conn.cursor()
+    products_filtered = curs.execute('SELECT * from products').fetchall()
+
     filters=[[], [], [], [], [],[]]
-    products_filtered = dt.products
     err=0
     err2=0
     while True:
-        ids=[]
-        for product in products_filtered:
-            ids.append(product[0])
         print_products(products_filtered)
         if not len(products_filtered):
             err2=1
@@ -261,122 +261,132 @@ def change_product():
         if err == 1:
             print("ERROR: Wpisano nieodpowiednią wartość.")
             err=0
-        inp = input("\ninput: ")
+        inp_id = input("\ninput: ")
         os.system('cls' if os.name == 'nt' else 'clear')
-        if inp in ids:
-            i=0
-            for product in dt.products:
-                if product[0] == inp:
-                    while True:
-                        os.system('cls' if os.name == 'nt' else 'clear')
-                        print_products([product])
-                        print()
-                        print("Zmień:\n1 - producent\n2 - nazwa\n3 - ryzy\n4 - format\n5 - gramatura\n6 - cena\n7 - dostępność\n0 - wyjście\n")
-                        if err == 1:
-                            print("ERROR: Wprowadź cyfrę z zakresu 0 - 7")
-                            err=0
-                        inp = input("input: ")
-                        os.system('cls' if os.name == 'nt' else 'clear')
-                        print_products([product])
-                        if inp == "1":
-                            inp2 = input("nowy producent: ")
-                            dt.products[i][1]=inp2
-                        elif inp == "2":
-                            inp2 = input("nowa nazwa: ")
-                            dt.products[i][2]=inp2
-                        elif inp == "3":
-                            while True:
-                                if err==1:
-                                    print_products([product])
-                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
-                                    err = 0
-                                inp2 = input("\nnowa ilość ryz: ")
-                                os.system('cls' if os.name == 'nt' else 'clear')
-                                if is_numeric(inp2):
-                                    if float(inp2)>0:
-                                        dt.products[i][3]=str(inp2)
-                                        break
-                                err=1                                        
-                        elif inp == "4":
-                            while True:
-                                if err==1:
-                                    print_products([product])
-                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
-                                    err = 0
-                                try:
-                                    inp2 = int(input("\nnowy format(cyfrę): "))
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    if inp2<0:
-                                        raise ValueError
-                                except ValueError:
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    err=1
-                                else:
-                                    dt.products[i][4]=str(inp2)
+        for product in products_filtered:
+            if str(product[0]) == inp_id:
+                while True:
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print_products([product])
+                    print()
+                    print("Zmień:\n1 - producent\n2 - nazwa\n3 - ryzy\n4 - format\n5 - gramatura\n6 - cena\n7 - dostępność\n0 - wyjście\n")
+                    if err == 1:
+                        print("ERROR: Wprowadź cyfrę z zakresu 0 - 7")
+                        err=0
+                    inp = input("input: ")
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    print_products([product])
+                    if inp == "1":
+                        inp2 = input("nowy producent: ")
+                        conn.execute('UPDATE products SET producer = ? WHERE id = ?', (inp2, inp_id))
+                    elif inp == "2":
+                        inp2 = input("nowa nazwa: ")
+                        conn.execute('UPDATE products SET name = ? WHERE id = ?', (inp2, inp_id))
+                    elif inp == "3":
+                        while True:
+                            if err==1:
+                                print_products([product])
+                                print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                err = 0
+                            inp2 = input("\nnowa ilość ryz: ")
+                            if is_numeric(inp2):
+                                if float(inp2)>0:
+                                    conn.execute('UPDATE products SET reams = ? WHERE id = ?', (str(inp2), inp_id))
                                     break
-                        elif inp == "5":
-                            while True:
-                                if err==1:
-                                    print_products([product])
-                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
-                                    err = 0
-                                try:
-                                    inp2 = int(input("\nnowa gramatura(liczba): "))
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    if inp2<0:
-                                        raise ValueError
-                                except ValueError:
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    err=1
-                                else:
-                                    dt.products[i][5]=str(inp2)
-                                    break
-                        elif inp == "6":
-                            while True:
-                                if err==1:
-                                    print_products([product])
-                                    print("ERROR: Wprowadź dodatnią liczbę.")
-                                    err = 0
-                                inp2 = input("\nnowa cena: ")
-                                os.system('cls' if os.name == 'nt' else 'clear')
-                                if is_numeric(inp2):
-                                    inp2=float(inp2)
-                                    if inp2>0:
-                                        dt.products[i][6]=round(inp2,2)
-                                        break
-                                err=1       
-                        elif inp == "7":
-                            while True:
-                                if err==1:
-                                    print_products([product])
-                                    print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
-                                    err = 0
-                                try:
-                                    inp2 = int(input("\nnowa dostępność: "))
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    if inp2<0:
-                                        raise ValueError
-                                except ValueError:
-                                    os.system('cls' if os.name == 'nt' else 'clear')
-                                    err=1
-                                else:
-                                    dt.products[i][7]=inp2
-                                    break
-                        elif inp == "0":
                             os.system('cls' if os.name == 'nt' else 'clear')
-                            break 
-                        else:
+                            err=1                                        
+                    elif inp == "4":
+                        while True:
+                            if err==1:
+                                print_products([product])
+                                print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                err = 0
+                            try:
+                                inp2 = int(input("\nnowy format(cyfrę): "))
+                                if inp2<0:
+                                    raise ValueError
+                            except ValueError:
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                err=1
+                            else:
+                                conn.execute('UPDATE products SET format = ? WHERE id = ?', (str(inp2), inp_id))
+                                break
+                    elif inp == "5":
+                        while True:
+                            if err==1:
+                                print_products([product])
+                                print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                err = 0
+                            try:
+                                inp2 = int(input("\nnowa gramatura(liczba): "))
+                                if inp2<0:
+                                    raise ValueError
+                            except ValueError:
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                err=1
+                            else:
+                                conn.execute('UPDATE products SET grammage = ? WHERE id = ?', (str(inp2), inp_id))
+                                break
+                    elif inp == "6":
+                        while True:
+                            if err==1:
+                                print_products([product])
+                                print("ERROR: Wprowadź dodatnią liczbę.")
+                                err = 0
+                            inp2 = input("\nnowa cena: ")
+                            if is_numeric(inp2):
+                                inp2=float(inp2)
+                                if inp2>0:
+                                    conn.execute('UPDATE products SET producer = ? WHERE id = ?', (round(inp2,2), inp_id))
+                                    break
                             os.system('cls' if os.name == 'nt' else 'clear')
-                            err=1
-                        dt.write_products()
-                    break
-                i+=1
+                            err=1       
+                    elif inp == "7":
+                        while True:
+                            if err==1:
+                                print_products([product])
+                                print("ERROR: Wprowadź całkowitą dodatnią liczbę.")
+                                err = 0
+                            try:
+                                inp2 = int(input("\nnowa dostępność: "))
+                                if inp2<0:
+                                    raise ValueError
+                            except ValueError:
+                                os.system('cls' if os.name == 'nt' else 'clear')
+                                err=1
+                            else:
+                                conn.execute('UPDATE products SET stock = ? WHERE id = ?', (inp2, inp_id))
+                                break
+                    elif inp == "0":
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        break 
+                    else:
+                        os.system('cls' if os.name == 'nt' else 'clear')
+                        err=1
+            
+                    conn.commit()
+                    conn.close()
+
+                    #odświeżenie bazy danych
+                    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+                    conn = sqlite3.connect(DATA_PATH)
+                    curs = conn.cursor()
+
+                    products = curs.execute('SELECT * from products').fetchall()
+                    product = curs.execute("SELECT * FROM products WHERE id=?", (inp_id,)).fetchall()[0]
+
+                    products_filtered = orders.filter_list(filters, products)
+                    input("SUCCESS: Poprawnie zmieniono produkt. Naciśnij enter by kontynuować...")
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                break
+        # i+=1
                     
-        elif inp == "f":
-            products_filtered, filters = orders.change_filters(products_filtered, filters)
-        elif inp == "s":
-            products_filtered = sort(products_filtered)
-        elif inp == "0":
-            return
-        else:
-            err=1
+            if inp_id == "f":
+                products_filtered, filters = orders.change_filters(products_filtered, filters)
+            elif inp_id == "s":
+                products_filtered = sort(products_filtered)
+            elif inp_id == "0":
+                return
+            else:
+                err=1
+        

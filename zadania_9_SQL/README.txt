@@ -1,0 +1,1 @@
+Żeby uruchomić program, uchuchom plik program.py

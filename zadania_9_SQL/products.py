@@ -3,6 +3,7 @@ import os
 import orders
 import pandas as pd
 import numpy as np
+import sqlite3
 
 def menu():
     dt.load_products()
@@ -74,13 +75,20 @@ def is_numeric(x):
     return True
 
 def add_product():
+    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+    conn = sqlite3.connect(DATA_PATH)
+    curs = conn.cursor()
+
+    products = curs.execute('SELECT * from products').fetchall()
+
     print_items=("ID: ", "producent: ","nazwa: ","ryzy: ","format(cyfra): ","gramatura(liczba): ","cena: ","ilość: ")
-    max_id=int(max(dt.products, key=lambda product: int(product[0]))[0])
+    max_id=int(max(products, key=lambda product: int(product[0]))[0])
     product=[str(max_id+1)]
     i=-1
     j=0
     err=0
     err2=0
+
     while True:
         if i==7:
             break
@@ -127,7 +135,7 @@ def add_product():
             i+=1
             if i==4:
                 print(f"format: A{product[i]}", end='')
-            elif i==5:
+            if i==5:
                 print(f"gramatura: {product[i]}", end='')
             else:
                 print(f"{print_items[i]}{product[i]}", end='')
@@ -137,8 +145,9 @@ def add_product():
                 print("zł",end="")
             if i!=j:
                 print(", ",end="")
-    dt.products.append(product)
-    dt.write_products()
+    curs.execute('INSERT INTO products VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7]))
+    conn.commit()
+    conn.close()
     input("\n\nSUCCESS: Dodano produkt. Wprowadź enter by kontynuować...")
     os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -165,15 +174,18 @@ def sort(products):
                 return sorted(products, key=lambda product: int(product[0]))
 
 def del_product():
+    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+    conn = sqlite3.connect(DATA_PATH)
+    curs = conn.cursor()
+
+    products = curs.execute('SELECT * from products').fetchall()
+    
     filters=[[], [], [], [], [],[]]
-    products_filtered = dt.products
+    products_filtered = products
     err=0
     err2=0
     while True:
-        ids=[]
-        for product in products_filtered:
-            ids.append(product[0])
-            print(f"ID: {product[0]} producent: {product[1]} nazwa: {product[2]} ryzy: {product[3]} format: A{product[4]} gramatura: {product[5]}g/m cena: {product[6]}zł dostępność: {product[7]}")
+        print_products(products_filtered)
         if not len(products_filtered):
             err2=1
         print(f"\nID - usuń produkt\nf - zmiana filtrów\ns - sortuj przez ID\n0 - wyjście")
@@ -184,23 +196,37 @@ def del_product():
             print("ERROR: Wpisano nieodpowiednią wartość.")
             err=0
         inp = input("\ninput: ")
-        os.system('cls' if os.name == 'nt' else 'clear')
-        if inp in ids:
-            i=0
-            for product in dt.products:
-                if product[0] == inp:
-                    del dt.products[i]
-                    dt.write_products
-                    return
-                i+=1
-        elif inp == "f":
-            products_filtered, filters = orders.change_filters(products_filtered, filters)
-        elif inp == "s":
-            products_filtered = sort(products_filtered)
-        elif inp == "0":
-            return
-        else:
-            err=1
+        try:
+            for product in products_filtered:
+                if str(product[0]) == inp:
+                    conn.execute('DELETE FROM products WHERE id = ?', (str(product[0]),))
+                    conn.commit()
+                    conn.close()
+
+                    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+                    conn = sqlite3.connect(DATA_PATH)
+                    curs = conn.cursor()
+
+                    products = curs.execute('SELECT * from products').fetchall()
+
+                    products_filtered = orders.filter_list(filters, products)
+                    input("SUCCESS: Poprawnie usunięto produkt. Naciśnij enter by kontynuować...")
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                    raise ValueError
+
+            os.system('cls' if os.name == 'nt' else 'clear')   
+            if inp == "f":
+                products_filtered, filters = orders.change_filters(products_filtered, filters)
+        
+            elif inp == "s":
+                products_filtered = sort(products_filtered)
+            
+            elif inp == "0":
+                return
+            else:
+                err=1
+        except ValueError:
+            pass
 
 def print_products(products):
     if np.size(products)==0:

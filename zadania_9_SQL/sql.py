@@ -12,20 +12,20 @@ curs = conn.cursor()
 #             password CHAR(255)
 #         );"""
 
-table = """ CREATE TABLE users_access (
-            username CHAR(255),
-            users BOOL,
-            products BOOL,
-            orders BOOL
-        );"""
+# table = """ CREATE TABLE users_access (
+#             username CHAR(255),
+#             users BOOL,
+#             products BOOL,
+#             orders BOOL
+#         );"""
 
 # table = """CREATE TABLE products (
 #             id INT,
 #             producer CHAR (255),
 #             name CHAR (255),
-#             reams INT,
-#             format char (4),
-#             grammage INT,
+#             reams CHAR (6),
+#             format CHAR (3),
+#             grammage CHAR (5),
 #             price FLOAT,
 #             stock INT
 #         );"""

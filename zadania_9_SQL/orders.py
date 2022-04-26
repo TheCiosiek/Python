@@ -226,9 +226,8 @@ def orders_history():
                 input('Wprowadź enter by kontynuowac...')
                 os.system('cls' if os.name == 'nt' else 'clear')
 
-def filter_list(filters):
+def filter_list(filters, products):
     i=1
-    products = dt.products
     for filter in filters:
         products_filtered = []
         if filter == []:
@@ -358,9 +357,9 @@ def change_filter(i, available_products):
                         return [[],[],[],add_filters,[],[]]
                     else:
                         return [[],[],[],[],[],[]]
-                elif inp.lower() in add_filters.lower():
+                elif inp.lower() in add_filters:
                     print("ERROR: Filtr już znajduje się w wybranych filtrach.")
-                elif inp.lower() not in available_products[3].lower():
+                elif inp.lower() not in available_products[3]:
                     print("ERROR: Brak formatu w dostępnych filtrach.")
                 else:
                     print("SUCCESS: Zmieniono filtr.")
@@ -543,7 +542,7 @@ def change_filters(products, filters):
                     i+=1
                     j+=1
                 filters = new_filters
-            products = filter_list(filters)
+            products = filter_list(filters, products)
 
 def print_filters(filters):
     i=0
@@ -730,6 +729,6 @@ def add_order():
                         err=1
                     else:
                         order[str(product[0])]=inp2
-                        input("SUCCESS: Dodano produkt do koszyka.")
+                        input("SUCCESS: Dodano produkt do koszyka. Naciśnij enter by kontynuować...")
                         os.system('cls' if os.name == 'nt' else 'clear')
                         break

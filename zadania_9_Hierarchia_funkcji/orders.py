@@ -354,9 +354,9 @@ def change_filter(i, available_products):
                         return [[],[],[],add_filters,[],[]]
                     else:
                         return [[],[],[],[],[],[]]
-                elif inp.lower() in add_filters.lower():
+                elif inp.lower() in add_filters:
                     print("ERROR: Filtr już znajduje się w wybranych filtrach.")
-                elif inp.lower() not in available_products[3].lower():
+                elif inp not in available_products[3]:
                     print("ERROR: Brak formatu w dostępnych filtrach.")
                 else:
                     print("SUCCESS: Zmieniono filtr.")

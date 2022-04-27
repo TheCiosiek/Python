@@ -8,7 +8,6 @@ import sqlite3
 
 def menu():
     dt.load_orders()
-    dt.load_products()
     while dt.auth[0]==True:
         option = options()
         if option == 1:
@@ -112,9 +111,11 @@ def change_order():
             err=1
         else:
             err=0
+
             if option == 0:
                 conn.close()
                 return
+
             elif option == 1:
                 print_out=("Anulowane:\n0 - nie\n1 - tak","Przyjęte\n0 - nie\n1 - tak", "Wysłane:\n0 - nie\n1 - tak", "Dostarczone:\n0 - nie\n1 - tak")
                 i=0
@@ -135,6 +136,7 @@ def change_order():
                             filters[i]=option
                             i+=1
                             break
+
             elif option == 2:
                 err2=0
                 cont=1
@@ -677,6 +679,7 @@ def add_order():
                     if inp == 0:
                         break
                     elif inp == 1:
+                        err = 0
                         while inp!="0":
                             if not order:
                                 input("ERROR: Brak dostępnych pozycji do usunięcia. Wprowadź enter by kontynuować...")
@@ -689,16 +692,22 @@ def add_order():
                                         if str(product[0]) in order:
                                             i+=1
                                             print(f"pozycja {i}, ilość {order[str(product[0])]}, koszt {order[str(product[0])]*product[6]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
-                                    inp = input("\nWpisz 0 by wyjść. \nPozycja do usunięcia: ")
+                                    print()
+                                    if err == 1:
+                                        print("ERROR: Nie znaleziono zamówienia. ", end='')
+                                        err = 0
+                                    inp = input("Wpisz 0 by wyjść. \nPozycja do usunięcia: ")
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     if inp=="0":
                                         break
                                     else:
                                         i=0
+                                        err = 1
                                         for product in products:
                                             if str(product[0]) in order:
                                                 i+=1
                                                 if str(i)==inp:
+                                                    err = 0
                                                     del order[str(product[0])]
 
                     elif inp == 2:

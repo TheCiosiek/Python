@@ -79,9 +79,9 @@ def filter_orders(i,j,k,l, products):
         print(f"numer zamówienia {order_id}, status {status}, data {order[1]}:")
         for product_id in order[0]:
             for product in products:
-                if product[0] == product_id:
+                if str(product[0]) == product_id:
                     i+=1
-                    print(f"    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
+                    print(f"    pozycja {i}, ilość {order[0][str(product[0])]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                     break
         i+=1
     return orders

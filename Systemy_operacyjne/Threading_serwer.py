@@ -43,7 +43,7 @@ if __name__ == "__main__":
     lock = threading.Lock()
     print ("Start serwera port 2222\n")
     serv = init_server()
-    while 1:
+    while True:
         print ("Czekam na komunikat od klienta")
         new_conn, addr = serv.accept()
         threads_id = []

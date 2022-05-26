@@ -4,6 +4,7 @@ import orders
 import pandas as pd
 import numpy as np
 import sqlite3
+from datetime import datetime
 
 def menu():
     while dt.auth[0]==True:
@@ -145,7 +146,7 @@ def add_product():
                 print("zł",end="")
             if i!=j:
                 print(", ",end="")
-    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano produkt " + product[1]))
+    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano produkt " + product[2]))
     curs.execute('INSERT INTO products VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7]))
     conn.commit()
     conn.close()

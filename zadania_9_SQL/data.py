@@ -38,7 +38,7 @@ def load_orders():
     global orders
     data_file_path = os.path.join(os.path.dirname(__file__), "database_orders.json")
     with open(data_file_path, "r") as file:
-        orders = json.load(file)
+            orders = json.load(file)
 
 global users, products, orders
 auth = False, "username", "access"

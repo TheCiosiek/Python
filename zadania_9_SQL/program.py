@@ -5,13 +5,14 @@ import products
 import orders
 import data as dt
 import sqlite3
+from datetime import datetime
 
 def options():
     err=0
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         cnt=0
-        print_out=["Pracownicy - ","Produkty - ","Zamówienia - "]
+        print_out=["Pracownicy - ","Produkty   - ","Zamówienia - "]
         for i in range (3):
             if dt.auth[2][i]:
                 print(f"{print_out[i]}{i-cnt+1}")
@@ -63,6 +64,8 @@ def login():
                     input("Zalogowanie poprawne. Naciśnij enter by kontynuować...")
                     os.system('cls' if os.name == 'nt' else 'clear')
                     dt.auth = True, user[2], users_access[0]
+                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Użytkownik się zalogował"))
+                    conn.commit()
                     conn.close()
                     return
                 else: 

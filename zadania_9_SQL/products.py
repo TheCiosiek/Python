@@ -102,6 +102,7 @@ def add_product():
             os.system('cls' if os.name == 'nt' else 'clear')
             if inp == "w":
                 return
+            #Wartość j chodzi po produktach do dodania, a i chodzi po produktach do dodania 
             elif j>1:
                 try:
                     if j<6 and j!=3 and j!=4:
@@ -144,6 +145,7 @@ def add_product():
                 print("zł",end="")
             if i!=j:
                 print(", ",end="")
+    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano produkt " + product[1]))
     curs.execute('INSERT INTO products VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7]))
     conn.commit()
     conn.close()
@@ -213,6 +215,7 @@ def del_product():
             else:
                 err=1
         except ValueError:
+            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Usunięto produkt " + product[2]))
             conn.execute('DELETE FROM products WHERE id = ?', (str(product[0]),))
             conn.commit()
             conn.close()
@@ -278,9 +281,11 @@ def change_product():
                     print_products([product])
                     if inp == "1":
                         inp2 = input("nowy producent: ")
+                        curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono producenta produktu " + product[2]))
                         conn.execute('UPDATE products SET producer = ? WHERE id = ?', (inp2, inp_id))
                     elif inp == "2":
                         inp2 = input("nowa nazwa: ")
+                        curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono nazwę produktu " + product[2]))
                         conn.execute('UPDATE products SET name = ? WHERE id = ?', (inp2, inp_id))
                     elif inp == "3":
                         while True:
@@ -291,6 +296,7 @@ def change_product():
                             inp2 = input("\nnowa ilość ryz: ")
                             if is_numeric(inp2):
                                 if float(inp2)>0:
+                                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieno ryzy produktu " + product[2]))
                                     conn.execute('UPDATE products SET reams = ? WHERE id = ?', (str(inp2), inp_id))
                                     break
                             os.system('cls' if os.name == 'nt' else 'clear')
@@ -309,6 +315,7 @@ def change_product():
                                 os.system('cls' if os.name == 'nt' else 'clear')
                                 err=1
                             else:
+                                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono format produktu " + product[2]))
                                 conn.execute('UPDATE products SET format = ? WHERE id = ?', (str(inp2), inp_id))
                                 break
                     elif inp == "5":
@@ -325,6 +332,7 @@ def change_product():
                                 os.system('cls' if os.name == 'nt' else 'clear')
                                 err=1
                             else:
+                                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono gramaturę produktu " + product[2]))
                                 conn.execute('UPDATE products SET grammage = ? WHERE id = ?', (str(inp2), inp_id))
                                 break
                     elif inp == "6":
@@ -337,6 +345,7 @@ def change_product():
                             if is_numeric(inp2):
                                 inp2=float(inp2)
                                 if inp2>0:
+                                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono cenę produktu " + product[2]))
                                     conn.execute('UPDATE products SET producer = ? WHERE id = ?', (round(inp2,2), inp_id))
                                     break
                             os.system('cls' if os.name == 'nt' else 'clear')
@@ -355,6 +364,7 @@ def change_product():
                                 os.system('cls' if os.name == 'nt' else 'clear')
                                 err=1
                             else:
+                                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono dostępność produktu " + product[2]))
                                 conn.execute('UPDATE products SET stock = ? WHERE id = ?', (inp2, inp_id))
                                 break
                     elif inp == "0":

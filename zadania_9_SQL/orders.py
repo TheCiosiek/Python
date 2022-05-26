@@ -206,8 +206,11 @@ def change_order():
                                         elif new_status == 0:
                                             for product in products:
                                                 if str(product[0]) in orders[inp][0]:
+                                                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Anulowano zamówienie " + inp))
                                                     conn.execute('UPDATE products SET stock = ? WHERE id = ?', ((product[7] + orders[inp][0][str(product[0])] ), product[0] ))
                                                     conn.commit()
+                                        else:
+                                            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono status zamówienia " + inp))
                                         dt.orders[inp][2]=new_status
                                         dt.write_orders()
                                         cont=0
@@ -723,6 +726,7 @@ def add_order():
                                     # order={"ID":"quantity"}
                                     conn.execute('UPDATE products SET stock = ? WHERE id = ?', (product[7]-order[str(product[0])], product[0]))
                                 i+=1
+                            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano zamówienie " + str(i)))
                             dt.write_orders()
                             conn.commit()
                             conn.close()

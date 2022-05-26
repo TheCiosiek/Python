@@ -3,6 +3,7 @@ import os
 import sqlite3
 import unicodedata
 import pandas as pd
+from datetime import datetime
 import data as dt
 
 def menu():
@@ -155,12 +156,18 @@ def add_name():
         name = input("\nWprowadź imię: ")
         if name=="0":
             return "0"
-        if name.isalpha():
+
+        if name.isalpha() and name:
             os.system('cls' if os.name == 'nt' else 'clear')
             return name
+
+        if len(name) >= 50:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("ERORR: Imię musi mniej 30 znaków. Wpisz 0, by wyjść.")
+
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("ERORR: Imię może zawierać tylko litery. Wpisz 0, by wyjść.")
+            print("ERORR: Imię musi zawierać tylko litery. Wpisz 0, by wyjść.")
 
 def add_surname():
     print("Wpisz 0, by wyjść")
@@ -168,12 +175,18 @@ def add_surname():
         surname = input("\nWprowadź nazwisko: ")
         if surname=="0":
             return "0"
-        if surname.isalpha():
+
+        if surname.isalpha() and surname:
             os.system('cls' if os.name == 'nt' else 'clear')
             return surname
+
+        if len(surname) >= 50:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print("ERORR: Imię musi mniej 50 znaków. Wpisz 0, by wyjść.")
+
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
-            print("ERORR: Nazwisko może zawierać tylko litery. Wpisz 0, by wyjść.")
+            print("ERORR: Nazwisko musi zawierać tylko litery. Wpisz 0, by wyjść.")
 
 def add_user():
     DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
@@ -202,6 +215,7 @@ def add_user():
 
     for i in range (8):
         password += random.choice(random.choice(["abcdefghijlklmnopqrstuvwxyz","ABCDEFGHIJLKMNOPQRSTUVWXYZ","123456789","~`!@#$%^&*()_-+="]))
+    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano użytkownika " + username))
     curs.execute('INSERT INTO users VALUES (?, ?, ?, ?)', (name, surname, username, password))
     curs.execute('INSERT INTO users_access VALUES (?, ?, ?, ?)', (username, access[0], access[1], access[2]))
     conn.commit()
@@ -238,6 +252,9 @@ def del_user():
             if user[2].lower() == del_user.lower():
                 curs.execute('DELETE FROM users WHERE username = ?', (user[2],))
                 curs.execute('DELETE FROM users_access WHERE username = ?', (user[2],))
+
+                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Usunięto użytkownika " + del_user))
+
                 conn.commit()
                 conn.close()
                 input("Usuwanie użytkownika poprawne. Wprowadź enter by kontynuować...")
@@ -251,19 +268,33 @@ def add_username(users):
         if err==1:
             print("ERROR: Login już istnieje. Wpisz 0 by wyjść.")
             err=0
+
         elif err==2:
             print("ERROR: Login ma mniej niż 6 znaków. Wpisz 0 by wyjść.")
             err=0
+
+        elif err==3:
+            print("ERROR: Login ma więcej niż 30 znaków. Wpisz 0 by wyjść.")
+            err=0
+
         else:
-            print("Login musi mieć przynajmniej 6 znaków. Wpisz 0 by wyjść.")
+            print("Login musi mieć między 6, a 30 znaków. Wpisz 0 by wyjść.")
         username=input("\nWprowadź login: ")
         
         if username=="0":
             os.system('cls' if os.name == 'nt' else 'clear')
             return "0"
+
         elif len(username)<6:
             os.system('cls' if os.name == 'nt' else 'clear')
             err=2
+            continue
+
+        elif len(username)>30:
+            os.system('cls' if os.name == 'nt' else 'clear')
+            err=3
+            continue
+
         for user in users:
             if user[2].lower()==username.lower():
                 os.system('cls' if os.name == 'nt' else 'clear')
@@ -379,36 +410,39 @@ def change_user():
                 name = add_name()
                 if name == "0":
                     continue
-                conn.execute('UPDATE users SET name = ? WHERE username = ?', (name, username))
+                curs.execute('UPDATE users SET name = ? WHERE username = ?', (name, username))
                 user[0] = name
                 os.system('cls' if os.name == 'nt' else 'clear')
 
                 if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
                     new_username = make_username(name, users[i][1], users)
-                    conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
-                    conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
+                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono imię użytkownika " + change_user))
+                    curs.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
+                    curs.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
                     user[2] = new_username
 
             elif option==2:
                 surname = add_surname()
                 if surname == "0":
                     continue
-                conn.execute('UPDATE users SET surname = ? WHERE username = ?', (surname, username))
+                curs.execute('UPDATE users SET surname = ? WHERE username = ?', (surname, username))
                 user[1] = surname
                 os.system('cls' if os.name == 'nt' else 'clear')
 
                 if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
                     new_username = make_username(name, users[i][1], users)
-                    conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
-                    conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
+                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono nazwisko użytkownika " + change_user))
+                    curs.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
+                    curs.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
                     user[2] = new_username
 
             elif option==3:
                 new_username = add_username(users)
                 if new_username == "0":
                     continue
-                conn.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
-                conn.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
+                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono nazwę użytkownika " + change_user))
+                curs.execute('UPDATE users SET username = ? WHERE username = ?', (new_username, username))
+                curs.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
                 user[2] = new_username
                 continue
 
@@ -416,12 +450,14 @@ def change_user():
                 password = add_password()
                 if password == "0":
                     continue
-                conn.execute('UPDATE users SET password = ? WHERE username = ?', (password, username))
+                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono hasło użytkownika " + change_user))
+                curs.execute('UPDATE users SET password = ? WHERE username = ?', (password, username))
                 user[3] = new_username
 
             elif option==5:
                 new_access = acces_change()
-                conn.execute('UPDATE users_access SET users = ?, products = ?, orders = ? WHERE username = ?', (new_access[0], new_access[1], new_access[2], username))
+                curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Zmieniono dostęp użytkownika " + change_user))
+                curs.execute('UPDATE users_access SET users = ?, products = ?, orders = ? WHERE username = ?', (new_access[0], new_access[1], new_access[2], username))
                 user[4], user[5], user[6] = new_access[0], new_access[1], new_access[2]
     conn.commit()
     conn.close()

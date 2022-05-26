@@ -22,7 +22,7 @@ curs = conn.cursor()
 # table = """CREATE TABLE products (
 #             id INT,
 #             producer CHAR (50),
-#             name CHAR (100),
+#             name CHAR (50),
 #             reams CHAR (6),
 #             format CHAR (3),
 #             grammage CHAR (5),

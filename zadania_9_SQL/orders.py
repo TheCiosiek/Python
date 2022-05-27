@@ -715,18 +715,18 @@ def add_order():
 
                     elif inp == 2:
                         if order:
-                            i=1
-                            for order_i in dt.orders:
-                                i+=1
+                            new_id = 1
+                            for order_id in dt.orders:
+                                new_id += 1
                             now = datetime.now()
-                            dt.orders[str(i)]=[order, now.strftime("%d/%m/%y %H:%M:%S"), 1]
+                            dt.orders[str(new_id)]=[order, now.strftime("%d/%m/%y %H:%M:%S"), 1]
                             i=0
                             for product in products:
                                 if str(product[0]) in order:
                                     # order={"ID":"quantity"}
                                     conn.execute('UPDATE products SET stock = ? WHERE id = ?', (product[7]-order[str(product[0])], product[0]))
                                 i+=1
-                            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano zamówienie nr " + str(i)))
+                            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano zamówienie nr " + str(new_id)))
                             dt.write_orders()
                             conn.commit()
                             conn.close()

@@ -147,7 +147,8 @@ def add_product():
             if i!=j:
                 print(", ",end="")
     curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.auth[1], "Dodano produkt " + product[2]))
-    curs.execute('INSERT INTO products VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7]))
+    # curs.execute('INSERT INTO products VALUES (?, ?, ?, ?, ?, ?, ?, ?)', (product[0], product[1], product[2], product[3], product[4], product[5], product[6], product[7]))
+    curs.execute('INSERT INTO products (producer, name, reams, format, grammage, price, stock) VALUES (?, ?, ?, ?, ?, ?, ?)', ( product[1], product[2], product[3], product[4], product[5], product[6], product[7]))
     conn.commit()
     conn.close()
     input("\n\nSUCCESS: Dodano produkt. Wprowadź enter by kontynuować...")

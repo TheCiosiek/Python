@@ -521,11 +521,12 @@ def del_filters(filters):
         i+=1
 
 def change_filters(products, filters):
+    filtered_products = filter_list(filters, products)
     products_filtered=[]
     err=0
     while True:
         i=0
-        prod.print_products(products)
+        prod.print_products(filtered_products)
         print("\nFiltry:")
         print_filters(filters)
         print()
@@ -544,7 +545,7 @@ def change_filters(products, filters):
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             if option == 0:
-                return products, filters
+                return filtered_products, filters
             elif option == 1: 
                 add_elements = add_filters(products,filters)
                 i=0
@@ -563,7 +564,7 @@ def change_filters(products, filters):
                     i+=1
                     j+=1
                 filters = new_filters
-            products = filter_list(filters, products)
+            filtered_products = filter_list(filters, products)
 
 def print_filters(filters):
     i=0

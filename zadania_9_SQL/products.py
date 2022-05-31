@@ -206,7 +206,7 @@ def del_product():
 
             os.system('cls' if os.name == 'nt' else 'clear')   
             if inp == "f":
-                products_filtered, filters = orders.change_filters(products_filtered, filters)
+                products_filtered, filters = orders.change_filters(products, filters)
         
             elif inp == "s":
                 products_filtered = sort(products_filtered)
@@ -244,13 +244,11 @@ def print_products(products):
         df['Cena'] = df['Cena'].astype(str) + 'zł'
     print(df.to_string(index=False))
 
-
 def change_product():
     DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
     conn = sqlite3.connect(DATA_PATH)
     curs = conn.cursor()
     products_filtered = curs.execute('SELECT * from products').fetchall()
-
     filters=[[], [], [], [], [],[]]
     err=0
     err2=0

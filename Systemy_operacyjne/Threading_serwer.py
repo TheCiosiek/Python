@@ -24,7 +24,7 @@ class makeThread (threading.Thread):
         self.conn.send(comm + msg)
         lock.release()
         self.conn.close()
-
+    
     def setName(self, name):
         self.name = name
     

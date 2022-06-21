@@ -229,24 +229,34 @@ def del_user():
     DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
     conn = sqlite3.connect(DATA_PATH)
     curs = conn.cursor()
-    queryset = curs.execute('SELECT * from users')
+    queryset = curs.execute('SELECT name, surname, username from users')
     users = queryset.fetchall()
 
+    os.system('cls' if os.name == 'nt' else 'clear')
+    df = pd.DataFrame(data = users, columns=["Imię","Nazwisko", "Nazwa"])
+    #zmienienie do lewej strony
+    
+    if df.empty:
+        input("ERROR: W bazie nie ma żadnego użytkownika. Wprowadź enter by kontynuować...")
+        return
+
+    #Gdyby było SELECT * FROM users
+    # df = pd.DataFrame(data = users, columns=["Imię","Nazwisko","Nazwa","Hasło"]).loc[:, ["Imię", "Nazwisko", "Nazwa"]]
+
     while del_user!="0":
-        os.system('cls' if os.name == 'nt' else 'clear')
-        df = pd.DataFrame(data = users, columns=["Imię","Nazwisko","Nazwa","Hasło"]).loc[:, ["Imię", "Nazwisko", "Nazwa"]]
-        if df.empty:
-            input("ERROR: W bazie nie ma żadnego użytkownika. Wprowadź enter by kontynuować...")
-            return
+        #
         print(df.to_string(index=False))
         print()
+
         if err==1:
             print("ERROR: Nie znaleziono użytkownika. Wpisz 0, by wyjść.")
         else:
             print("Wpisz 0, by wyjść.")
+
         del_user = input("Nazwa użytkownika do usunięcia: ")
         if del_user == "0":
             return
+
         i=0
         for user in users:
             if user[2].lower() == del_user.lower():

@@ -1,5 +1,6 @@
 import json
 import os
+from dataclasses import dataclass
 import pandas as pd
 
 # def write_users():
@@ -41,4 +42,20 @@ def load_orders():
             orders = json.load(file)
 
 global users, products, orders
+
+@dataclass
+class LoggedUser:
+    name : str
+    surname: str
+    username: str
+    logged: bool
+    access_list: list
+    
+    @classmethod
+    def logout(self):
+        return LoggedUser(None, None, None, False, None)
+    
+    
+LoggedUserObj = LoggedUser.logout()
+
 auth = False, "username", "access"

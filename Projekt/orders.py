@@ -4,11 +4,11 @@ import operator
 from datetime import datetime
 import numpy as np
 import products as prod
+import sqlite3
 
 def menu():
     dt.load_orders()
-    dt.load_products()
-    while dt.auth[0]==True:
+    while dt.LoggedUserObj.logged==True:
         option = options()
         if option == 1:
             add_order()
@@ -19,14 +19,14 @@ def menu():
         elif option == 4:
             return
         elif option == 5:
-            dt.auth=False, "user"
+            dt.LoggedUserObj.logged=False
         elif option == 6:
-            dt.auth = None, "user"
+            dt.LoggedUserObj.logged = None
 
 def options():
     err=0
     while True:
-        if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
+        if (dt.LoggedUserObj.access_list[0] + dt.LoggedUserObj.access_list[1] + dt.LoggedUserObj.access_list[2])>1:
             print("(1) Dodaj zamówienie\n(2) Wyświetl zamówienia\n(3) Zmień status\n(4) Zmień program\n(5) Wyloguj się\n(6) Wyjdź")
             if err==1:
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 6.")
@@ -36,14 +36,14 @@ def options():
                 print("ERROR: Wprowadź cyfrę z przedziału 1 - 5.")
         try:
             option=int(input("\ninput: "))
-            if (bool(dt.auth[1][4][0]) + bool(dt.auth[1][4][1]) + bool(dt.auth[1][4][2]))>1:
-                if option not in range(1,7):
+            if (dt.LoggedUserObj.access_list[0] + dt.LoggedUserObj.access_list[1] + dt.LoggedUserObj.access_list[2])>1:
+                if option not in range(1, 7):
                     raise ValueError
             else:
-                if option not in range(1,6):
+                if option not in range(1, 6):
                     raise ValueError
-                elif option >3:
-                    option+=1
+                elif option > 3:
+                    option += 1
         except ValueError:
             os.system('cls' if os.name == 'nt' else 'clear')
             err=1
@@ -51,8 +51,9 @@ def options():
             os.system('cls' if os.name == 'nt' else 'clear')
             return option     
 
-def filter_orders(i,j,k,l):
+def filter_orders(i,j,k,l, products):
     orders={}
+
     for order_id,order in dt.orders.items():
         if order[2] == 0 and i:
             orders[order_id]=order
@@ -63,6 +64,7 @@ def filter_orders(i,j,k,l):
         elif order[2] == 3 and l:
             orders[order_id]=order
     a_status = ["anulowane","przyjęte","wysłane","dostarczone"]
+
     for order_id, order in orders.items():
         i=0
         if order[2] == 0:
@@ -73,21 +75,29 @@ def filter_orders(i,j,k,l):
             status = a_status[2]
         else:
             status = a_status[3]
+
         print(f"numer zamówienia {order_id}, status {status}, data {order[1]}:")
         for product_id in order[0]:
-            for product in dt.products:
-                if product[0] == product_id:
+            for product in products:
+                if str(product[0]) == product_id:
                     i+=1
-                    print(f"    pozycja {i}, ilość {order[0][product[0]]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
+                    print(f"    pozycja {i}, ilość {order[0][str(product[0])]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                     break
         i+=1
     return orders
 
 def change_order():
+    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+    conn = sqlite3.connect(DATA_PATH)
+    curs = conn.cursor()
+
+    products = curs.execute('SELECT * from products').fetchall()
+
     filters=[1,1,1,1]
     err=0
+    
     while True:
-        orders = filter_orders(filters[0],filters[1],filters[2],filters[3])
+        orders = filter_orders(filters[0],filters[1],filters[2],filters[3], products)
         print("\n1 - zmień filtry\n2 - zmień status\n0 - wyjdź")
         if err==1:
             print("ERROR: Wprowadź cyfrę z przedziału 0 - 2.")
@@ -101,8 +111,11 @@ def change_order():
             err=1
         else:
             err=0
+
             if option == 0:
+                conn.close()
                 return
+
             elif option == 1:
                 print_out=("Anulowane:\n0 - nie\n1 - tak","Przyjęte\n0 - nie\n1 - tak", "Wysłane:\n0 - nie\n1 - tak", "Dostarczone:\n0 - nie\n1 - tak")
                 i=0
@@ -123,11 +136,12 @@ def change_order():
                             filters[i]=option
                             i+=1
                             break
+
             elif option == 2:
                 err2=0
                 cont=1
                 while cont==1:
-                        filter_orders(filters[0],filters[1],filters[2],filters[3])
+                        filter_orders(filters[0],filters[1],filters[2],filters[3], products)
                         if err2==1:
                             print("ERROR: Nie znaleziono numeru zamówienia. Wpisz 0 by wyjść.")
                         else:
@@ -163,7 +177,7 @@ def change_order():
                                     i=0
                                     print(f"numer zamówienia {inp}, status {orders[inp][2]}, data {orders[inp][1]}:")
                                     for product_id in orders[inp][0]:
-                                        for product in dt.products:
+                                        for product in products:
                                             if product[0] == product_id:
                                                 print(f"    pozycja {i}, ilość {orders[inp][0][product[0]]}:\n        producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                                                 i+=1
@@ -172,33 +186,43 @@ def change_order():
                                     if err==1:
                                         print("ERROR: Wprowadź cyfrę z przedziału 0 - 3.")
                                     try:
-                                        inp2=input("\nnowy status: ")
+                                        new_status=input("\nnowy status: ")
                                         os.system('cls' if os.name == 'nt' else 'clear')
-                                        if inp2 == "w":
+                                        if new_status == "w":
                                             pass
                                         else:
-                                            inp2 = int(inp2)
-                                            if inp2 not in range(0, 4):
+                                            new_status = int(new_status)
+                                            if new_status not in range(0, 4):
                                                 raise ValueError
                                     except ValueError:
                                         os.system('cls' if os.name == 'nt' else 'clear')
                                         err=1
                                     else:
-                                        if inp2=="w":
+                                        if new_status=="w":
                                             cont=0
                                             break
-                                        i=0
-                                        for product in dt.products:
-                                            if product[0] in orders[inp][0]:
-                                                dt.products[i][7]+=orders[inp][0][product[0]]
-                                            i+=1
-                                        dt.write_products()
-                                        dt.orders[inp][2]=inp2
+
+                                        #dodanie przedmiotów po anulowaniu zamówienia
+                                        elif new_status == 0:
+                                            for product in products:
+                                                if str(product[0]) in orders[inp][0]:
+                                                    curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"),dt.LoggedUserObj.username, "Anulowano zamówienie " + inp))
+                                                    conn.execute('UPDATE products SET stock = ? WHERE id = ?', ((product[7] + orders[inp][0][str(product[0])] ), product[0] ))
+                                                    conn.commit()
+                                        else:
+                                            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Zmieniono status zamówienia nr " + inp))
+                                        dt.orders[inp][2]=new_status
                                         dt.write_orders()
                                         cont=0
                                         break
 
 def orders_history():
+    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+    conn = sqlite3.connect(DATA_PATH)
+    curs = conn.cursor()
+
+    products = curs.execute('SELECT * from products').fetchall()
+
     err=0
     while True:
         print("Wyświetl zamówieniaL\n1 - bieżące\n2 - archiwalne\n0 - wyjść.")
@@ -212,19 +236,19 @@ def orders_history():
             err=1
         else:
             if inp == 0:
+                conn.close()
                 break
             elif inp == 1:
-                filter_orders(0, 1, 1, 0)
+                filter_orders(0, 1, 1, 0, products)
                 input('Wprowadź enter by kontynuowac...')
                 os.system('cls' if os.name == 'nt' else 'clear')
             else:
-                filter_orders(1, 0, 0, 1)
+                filter_orders(1, 0, 0, 1, products)
                 input('Wprowadź enter by kontynuowac...')
                 os.system('cls' if os.name == 'nt' else 'clear')
 
-def filter_list(filters):
+def filter_list(filters, products):
     i=1
-    products = dt.products
     for filter in filters:
         products_filtered = []
         if filter == []:
@@ -249,7 +273,7 @@ def filter_list(filters):
                         products_filtered.append(product)
             elif i==5:
                 for product in products:
-                    if product[5].lower in filter:
+                    if product[5].lower() in filter:
                         products_filtered.append(product)
             elif i==6:
                 for product in products:
@@ -356,7 +380,7 @@ def change_filter(i, available_products):
                         return [[],[],[],[],[],[]]
                 elif inp.lower() in add_filters:
                     print("ERROR: Filtr już znajduje się w wybranych filtrach.")
-                elif inp not in available_products[3]:
+                elif inp.lower() not in available_products[3]:
                     print("ERROR: Brak formatu w dostępnych filtrach.")
                 else:
                     print("SUCCESS: Zmieniono filtr.")
@@ -497,11 +521,12 @@ def del_filters(filters):
         i+=1
 
 def change_filters(products, filters):
+    filtered_products = filter_list(filters, products)
     products_filtered=[]
     err=0
     while True:
         i=0
-        prod.print_products(products)
+        prod.print_products(filtered_products)
         print("\nFiltry:")
         print_filters(filters)
         print()
@@ -520,7 +545,7 @@ def change_filters(products, filters):
         else:
             os.system('cls' if os.name == 'nt' else 'clear')
             if option == 0:
-                return products, filters
+                return filtered_products, filters
             elif option == 1: 
                 add_elements = add_filters(products,filters)
                 i=0
@@ -539,7 +564,7 @@ def change_filters(products, filters):
                     i+=1
                     j+=1
                 filters = new_filters
-            products = filter_list(filters)
+            filtered_products = filter_list(filters, products)
 
 def print_filters(filters):
     i=0
@@ -596,10 +621,16 @@ def sort(products):
                 return sorted(products, key=lambda product: product[6])
 
 def add_order():
+    DATA_PATH =  os.path.join(os.path.dirname(__file__), 'data.db')
+    conn = sqlite3.connect(DATA_PATH)
+    curs = conn.cursor()
+
+    products = curs.execute('SELECT * from products').fetchall()
+
     filters=[[], [], [], [], [],[]]
     # order={"ID":"quantity"}
     order={}
-    products_filtered=dt.products
+    products_filtered=products
     err=0
     err2=0
     while True:
@@ -630,11 +661,11 @@ def add_order():
                 if not order:
                     print("Brak produktów w koszyku")
                 cost=0
-                for product in dt.products:
-                    if product[0] in order:
+                for product in products:
+                    if str(product[0]) in order:
                         i+=1
-                        cost+=order[product[0]]*product[6]
-                        print(f"pozycja {i}, ilość {order[product[0]]}, koszt {order[product[0]]*product[6]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
+                        cost+=order[str(product[0])]*product[6]
+                        print(f"pozycja {i}, ilość {order[str(product[0])]}, koszt {order[str(product[0])]*product[6]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
                 print(f"razem: {cost}")
                 print("\n1 - usuń pozycje\n2 - zrób zamówienie\n0 - wyjść")
                 if err==1:
@@ -652,6 +683,7 @@ def add_order():
                     if inp == 0:
                         break
                     elif inp == 1:
+                        err = 0
                         while inp!="0":
                             if not order:
                                 input("ERROR: Brak dostępnych pozycji do usunięcia. Wprowadź enter by kontynuować...")
@@ -660,39 +692,48 @@ def add_order():
                             else:
                                 while order:
                                     i=0
-                                    for product in dt.products:
-                                        if product[0] in order:
+                                    for product in products:
+                                        if str(product[0]) in order:
                                             i+=1
-                                            print(f"pozycja {i}, ilość {order[product[0]][0]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
-                                    inp = input("\nWpisz 0 by wyjść. Pozycja do usunięcia: ")
+                                            print(f"pozycja {i}, ilość {order[str(product[0])]}, koszt {order[str(product[0])]*product[6]}:\n    producent: {product[1]}, nazwa: {product[2]}, ryzy: {product[3]}, format: A{product[4]}, gramatura: {product[5]}g/m, cena: {product[6]}zł")
+                                    print()
+                                    if err == 1:
+                                        print("ERROR: Nie znaleziono zamówienia. ", end='')
+                                        err = 0
+                                    inp = input("Wpisz 0 by wyjść. \nPozycja do usunięcia: ")
                                     os.system('cls' if os.name == 'nt' else 'clear')
                                     if inp=="0":
                                         break
                                     else:
                                         i=0
-                                        for product in products_filtered:
-                                            if product[0] in order:
+                                        err = 1
+                                        for product in products:
+                                            if str(product[0]) in order:
                                                 i+=1
                                                 if str(i)==inp:
-                                                    del order[product[0]]
+                                                    err = 0
+                                                    del order[str(product[0])]
 
                     elif inp == 2:
                         if order:
-                            i=1
-                            for order_i in dt.orders:
-                                i+=1
+                            new_id = 1
+                            for order_id in dt.orders:
+                                new_id += 1
                             now = datetime.now()
-                            dt.orders[str(i)]=[order, now.strftime("%d/%m/%y %H:%M:%S"), 1]
+                            dt.orders[str(new_id)]=[order, now.strftime("%d/%m/%y %H:%M:%S"), 1]
                             i=0
-                            while i<len(dt.products):
-                                if dt.products[i][0] in order:
-                                    dt.products[i][7]-=order[dt.products[i][0]]
+                            for product in products:
+                                if str(product[0]) in order:
+                                    # order={"ID":"quantity"}
+                                    conn.execute('UPDATE products SET stock = ? WHERE id = ?', (product[7]-order[str(product[0])], product[0]))
                                 i+=1
-                            dt.write_products()
+                            curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Dodano zamówienie nr " + str(new_id)))
                             dt.write_orders()
-                            order={}
+                            conn.commit()
+                            conn.close()
                             input("SUCCES: Utworzono zamówienie. Wprowadź enter by kontynuować.")
-                            break
+                            os.system('cls' if os.name == 'nt' else 'clear')
+                            return
                         else:
                             input("ERROR: Brak produktów w koszyku. Wprowadź enter by kontynuować...")
         elif inp == "0":
@@ -700,13 +741,16 @@ def add_order():
         else:
             getter = operator.itemgetter(0)
             ids=map(getter, products_filtered)
-            if inp not in ids:
+            try:
+                if int(inp) not in ids:
+                    err = 1
+            except:
                 err = 1
             else:
                 err=0
                 while True:
                     for product in products_filtered:
-                        if product[0]==inp:
+                        if product[0]==int(inp):
                             prod.print_products([product])
                             break
                     if err==1:
@@ -726,6 +770,6 @@ def add_order():
                         err=1
                     else:
                         order[str(product[0])]=inp2
-                        input("SUCCESS: Dodano produkt do koszyka.")
+                        input("SUCCESS: Dodano produkt do koszyka. Naciśnij enter by kontynuować...")
                         os.system('cls' if os.name == 'nt' else 'clear')
                         break

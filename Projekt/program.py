@@ -11,6 +11,7 @@ def options():
     err=0
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
+        print(f"Witaj, {dt.LoggedUserObj.name} {dt.LoggedUserObj.surname}.\n")
         cnt=0
         print_out=["Pracownicy - ","Produkty   - ","Zamówienia - "]
         for i in range (3):

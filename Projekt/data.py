@@ -57,5 +57,3 @@ class LoggedUser:
     
     
 LoggedUserObj = LoggedUser.logout()
-
-auth = False, "username", "access"

@@ -6,7 +6,7 @@ import unicodedata
 import pandas as pd
 from datetime import datetime
 import data as dt
-from pydantic import BaseModel, ValidationError, validator
+from pydantic import BaseModel, ValidationError, root_validator, validator
 
 def menu():
     while dt.LoggedUserObj.logged==True:
@@ -154,8 +154,14 @@ def make_username(name, surname, users):
 
 
 class UserCheck(BaseModel):
-    name: str
-    
+    name: Optional[str]
+    password: Optional[str]
+    passLength: bool = False
+    passBigLetters : bool = False
+    passSmallLetters : bool = False
+    passDigits: bool = False
+    passSpecial: bool = False
+
     @validator("name")
     def alpha_check(cls, v):
         if not v.isalpha():
@@ -168,6 +174,25 @@ class UserCheck(BaseModel):
         if len(v) >= 50:
             raise ValueError("length")
         return v
+    
+    @root_validator
+    def passValidator(cls, values):
+        password = values.get("password")
+        if password is not None:
+            if len(password) >= 8:
+                values['passLength'] = True 
+            for i in password:
+                if i.isalpha():
+                    if ord(i) in range(65,91):
+                        values['passBigLetters'] = True
+                    else:
+                        values['passSmallLetters'] = True
+                elif i.isdigit():
+                    values['passDigits'] = True
+                else:
+                    values['passSpecial'] = True
+            return values
+
 
 def add_name():
     os.system('cls' if os.name == 'nt' else 'clear')
@@ -333,35 +358,25 @@ def add_username(users):
 
 def add_password():
     while True:
-        password_pass={"Sześć znaków":0,"Duże litery":0,"Małe litery":0,"Cyfry":0,"Znaki":0}
         all_ok=1
         os.system('cls' if os.name == 'nt' else 'clear')
         print(f"Hasło musi mieć przynajmniej 8 znaków, jedną małą i dużą literę, cyfrę oraz znak. Wpisz 0 by wyjść.")
         password=input("Wprowadź hasło: ")
         if password=="0":
             return "0"
-        if len(password)>7:
-            password_pass["Sześć znaków"]+=1
-        for i in password:
-            if i.isalpha():
-                if ord(i) in range(65,91):
-                    password_pass["Duże litery"]+=1
-                else:
-                    password_pass["Małe litery"]+=1
-            elif i.isdigit():
-                password_pass["Cyfry"]+=1
-            else:
-                password_pass["Znaki"]+=1
+        else:
+            userChecked = UserCheck(password=password)
+            password_pass={"Osiem znaków":userChecked.passLength,"Duże litery":userChecked.passBigLetters,"Małe litery":userChecked.passSmallLetters,"Cyfry":userChecked.passDigits,"Znaki specjalne":userChecked.passSpecial}
         s=" "
         for i in password_pass:
-            if password_pass[i]==0:
+            if not password_pass[i]:
                 ok=False
                 all_ok=0
             else:
                 ok=True
-            print (f"{i}:{s*(12-len(i))} {ok}")        
+            print (f"{i}:{s*(17-len(i))} {ok}")        
         if not all_ok:
-            input(f"ERROR: Rejestracja niepoprawna. Wprowadź enter by kontynuować...")
+            input(f"ERROR: Hasło nie spełnia wymagań. Wprowadź enter by kontynuować...")
         else: 
             input(f"Hasło poprawne. Wprowadź enter by kontynuować...")
             os.system('cls' if os.name == 'nt' else 'clear')
@@ -486,8 +501,7 @@ def change_user():
                 curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Zmieniono hasło użytkownika " + change_user))
                 curs.execute('UPDATE users SET password = ? WHERE username = ?', (password, username))
                 conn.commit()
-                user[3] = new_username
-
+                user[3] = password
             elif option==5:
                 new_access = acces_change()
                 curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Zmieniono dostęp użytkownika " + change_user))

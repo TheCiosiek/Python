@@ -51,13 +51,13 @@ def login():
     os.system('cls' if os.name == 'nt' else 'clear')
     while True:
         print("Wpisz 0 by wyjść.")
-        # login=input("Login: ")
-        login="adrszy"
+        login=input("Login: ")
+        # login="adrszy"
         if login=="0":
             dt.LoggedUserObj = None
             return
-        # password=input("Hasło: ")
-        password="dG~86FzO"
+        password=input("Hasło: ")
+        # password="dG~86FzO"
         if password=="0":
             dt.LoggedUserObj.access_list = None
             return

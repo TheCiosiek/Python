@@ -51,9 +51,9 @@ class LoggedUser:
     logged: bool
     access_list: list
     
-    @classmethod
-    def logout(self):
-        return LoggedUser(None, None, None, False, None)
+    # @classmethod
+    # def logout(self):
+    #     return LoggedUser(None, None, None, False, None)
     
     
-LoggedUserObj = LoggedUser.logout()
+LoggedUserObj = LoggedUser(None, None, None, False, None)

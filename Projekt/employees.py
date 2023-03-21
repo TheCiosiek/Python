@@ -456,6 +456,7 @@ def change_user():
                 curs.execute('UPDATE users SET name = ? WHERE username = ?', (name, username))
                 curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Zmieniono imię użytkownika " + change_user))
                 user[0] = name
+                dt.LoggedUserObj.name = name
                 os.system('cls' if os.name == 'nt' else 'clear')
 
                 if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
@@ -464,6 +465,7 @@ def change_user():
                     curs.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
                     curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Zmieniono nazwę użytkownika " + change_user))
                     user[2] = new_username
+                    dt.LoggedUserObj.username = new_username
                 conn.commit()
 
             elif option==2:
@@ -473,6 +475,7 @@ def change_user():
                 curs.execute('UPDATE users SET surname = ? WHERE username = ?', (surname, username))
                 curs.execute('INSERT INTO logs VALUES (?, ?, ?)', (datetime.now().strftime("%H:%M:%S %d/%m/%y"), dt.LoggedUserObj.username, "Zmieniono nazwisko użytkownika " + change_user))
                 user[1] = surname
+                dt.LoggedUserObj.surname = surname
                 os.system('cls' if os.name == 'nt' else 'clear')
 
                 if input("Zmienić nazwę użytkownika?\n0 - nie\n1 - tak\n\ninput: ") == "1":
@@ -492,6 +495,7 @@ def change_user():
                 curs.execute('UPDATE users_access SET username = ? WHERE username = ?', (new_username, username))
                 conn.commit()
                 user[2] = new_username
+                dt.LoggedUserObj.username = new_username
                 continue
 
             elif option==4:
